@@ -17,12 +17,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuUsuarioActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="subMenuMantUsuario">
+            <MenuItem class="javax.swing.JMenuItem" name="subMenuMantCarta">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Mantenimiento"/>
+                <Property name="text" type="java.lang.String" value="Carta"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuMantUsuarioActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="subMenuMantCartaActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

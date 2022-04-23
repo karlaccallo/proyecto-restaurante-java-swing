@@ -9,33 +9,30 @@ import extras.Mensajes;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
 
-  
-
 public class FrmPrincipal extends javax.swing.JFrame {
 
-   //Vriable Globales de Tipo JIFrame
+    //Vriable Globales de Tipo JIFrame
     IfrmUsuarios oufrmusu;
-    IfrmmntUsuarios oufrmmntUsu;
-   
+    IfrmCarta oufrmmcarta;
+
     public FrmPrincipal() {
         initComponents();
     }
 
- 
-        //Verificamos si el formulario ya fue abierto
-    public boolean estacerrado(Object objetos){
-        JInternalFrame[] finterno=miescritorio.getAllFrames();
-        boolean cerrado=true;
-        int i=0;
-        while(i<finterno.length && cerrado){
-            if(finterno[i]==objetos){
-                cerrado=false;
+    //Verificamos si el formulario ya fue abierto
+    public boolean estacerrado(Object objetos) {
+        JInternalFrame[] finterno = miescritorio.getAllFrames();
+        boolean cerrado = true;
+        int i = 0;
+        while (i < finterno.length && cerrado) {
+            if (finterno[i] == objetos) {
+                cerrado = false;
             }
             i++;
         }
         return cerrado;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -44,7 +41,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         menuTablas = new javax.swing.JMenu();
         subMenuUsuario = new javax.swing.JMenuItem();
-        subMenuMantUsuario = new javax.swing.JMenuItem();
+        subMenuMantCarta = new javax.swing.JMenuItem();
         menuMenu = new javax.swing.JMenu();
         subMenuLaCarta = new javax.swing.JCheckBoxMenuItem();
         menuPedidos = new javax.swing.JMenu();
@@ -78,13 +75,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
         });
         menuTablas.add(subMenuUsuario);
 
-        subMenuMantUsuario.setText("Mantenimiento");
-        subMenuMantUsuario.addActionListener(new java.awt.event.ActionListener() {
+        subMenuMantCarta.setText("Carta");
+        subMenuMantCarta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                subMenuMantUsuarioActionPerformed(evt);
+                subMenuMantCartaActionPerformed(evt);
             }
         });
-        menuTablas.add(subMenuMantUsuario);
+        menuTablas.add(subMenuMantCarta);
 
         jMenuBar1.add(menuTablas);
 
@@ -150,34 +147,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void subMenuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuUsuarioActionPerformed
-         if(estacerrado(oufrmusu)){
-           oufrmusu=new IfrmUsuarios();
-           miescritorio.add(oufrmusu);
-           oufrmusu.show();
-       }else{   
+        if (estacerrado(oufrmusu)) {
+            oufrmusu = new IfrmUsuarios();
+            miescritorio.add(oufrmusu);
+            oufrmusu.show();
+        } else {
             try {
                 oufrmusu.setMaximum(true);
                 oufrmusu.setMaximum(false);
             } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en "+ex.getMessage());
-            } 
-       }
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
-
-    private void subMenuMantUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMantUsuarioActionPerformed
-         if(estacerrado(oufrmmntUsu)){
-           oufrmmntUsu=new IfrmmntUsuarios();
-           miescritorio.add(oufrmmntUsu);
-           oufrmmntUsu.show();
-       }else{   
-            try {
-                oufrmmntUsu.setMaximum(true);
-                oufrmmntUsu.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en "+ex.getMessage());
-            } 
-       }
-    }//GEN-LAST:event_subMenuMantUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
         // TODO add your handling code here:
@@ -186,6 +168,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_subMenuPedidosSolicitadosActionPerformed
+
+    private void subMenuMantCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMantCartaActionPerformed
+        if (estacerrado(oufrmmcarta)) {
+            oufrmmcarta = new IfrmCarta();
+            miescritorio.add(oufrmmcarta);
+            oufrmmcarta.show();
+        } else {
+            try {
+                oufrmmcarta.setMaximum(true);
+                oufrmmcarta.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_subMenuMantCartaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,7 +231,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JDesktopPane miescritorio;
     private javax.swing.JCheckBoxMenuItem subMenuConfigMesas;
     private javax.swing.JCheckBoxMenuItem subMenuLaCarta;
-    private javax.swing.JMenuItem subMenuMantUsuario;
+    private javax.swing.JMenuItem subMenuMantCarta;
     private javax.swing.JCheckBoxMenuItem subMenuPedidosSolicitados;
     private javax.swing.JCheckBoxMenuItem subMenuReporte;
     private javax.swing.JMenuItem subMenuUsuario;

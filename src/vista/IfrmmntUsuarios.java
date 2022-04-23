@@ -203,7 +203,7 @@ public class IfrmmntUsuarios extends javax.swing.JInternalFrame {
          try {
              String buscar=Mensajes.miInput("Codigo de usuario");
         int codigo=Integer.parseInt(buscar);
-        ou=UsuarioDAO.getUsuarioID(codigo);
+        ou=UsuarioDAO.getUsuarioByID(codigo);
         
        
              txtcod.setText(""+ou.getUsuarioId());

@@ -6,7 +6,8 @@
 package vista;
 
 import net.proteanit.sql.DbUtils;
-import controlador.UsuarioDAO;
+
+import controlador.CartaDAO;
 import extras.Mensajes;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -14,14 +15,14 @@ import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
-import modelo.Usuario;
+import modelo.Carta;
 
-public class IfrmUsuarios extends javax.swing.JInternalFrame {
+public class IfrmCarta extends javax.swing.JInternalFrame {
 
-    public IfrmUsuarios() {
+    public IfrmCarta() {
         initComponents();
         //de aqui es para la lista doble click
-        tblusu.addMouseListener(new MouseAdapter() {
+        tblCarta.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent Mouse_evt) {
                 JTable table = (JTable) Mouse_evt.getSource();
                 Point point = Mouse_evt.getPoint();
@@ -37,10 +38,10 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
         controles(false, false, true, true, true, true, true, false);
 
         //cargar combo
-        ResultSet rsE;
-        rsE = UsuarioDAO.getDataEmpleado();
-        cargarcomboPerfil(cborol);
-        cargarcomboEmpleado(cboEmpleado, rsE);
+        ResultSet rsCtegoria;
+        rsCtegoria = CartaDAO.getDataCategoria();
+        cargarcomboEstado(cboEstado);
+        cargarcomboCategoria(cboCategoria, rsCtegoria);
         //final combo
     }
 
@@ -54,25 +55,29 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblusu = new javax.swing.JTable();
-        cborol = new javax.swing.JComboBox<>();
-        jLabel4 = new javax.swing.JLabel();
+        tblCarta = new javax.swing.JTable();
+        cboEstado = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        txtcod = new javax.swing.JTextField();
+        txtCartaId = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        txtusu = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        txtpass = new javax.swing.JTextField();
         btngrabar = new javax.swing.JButton();
         btneditar = new javax.swing.JButton();
         btneliminar = new javax.swing.JButton();
         btnbuscar = new javax.swing.JButton();
-        cboEmpleado = new javax.swing.JComboBox<>();
+        cboCategoria = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         btnnuevo = new javax.swing.JButton();
         btncancelar = new javax.swing.JButton();
         txtbuscar = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        txtDescripcion = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
+        txtPrecio = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        txtDescuento = new javax.swing.JTextField();
 
         setClosable(true);
         setIconifiable(true);
@@ -94,7 +99,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
             }
         });
 
-        tblusu.setModel(new javax.swing.table.DefaultTableModel(
+        tblCarta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -105,15 +110,19 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(tblusu);
+        jScrollPane1.setViewportView(tblCarta);
 
-        jLabel4.setText("Password:");
+        cboEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cboEstadoActionPerformed(evt);
+            }
+        });
 
-        jLabel1.setText("Codigo:");
+        jLabel1.setText("CartaId");
 
-        jLabel2.setText("Usuario:");
+        jLabel2.setText("Nombre:");
 
-        jLabel3.setText("Rol:");
+        jLabel3.setText("Estado:");
 
         btngrabar.setText("Grabar");
         btngrabar.addActionListener(new java.awt.event.ActionListener() {
@@ -143,7 +152,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel5.setText("Empleado:");
+        jLabel5.setText("Categoria:");
 
         btnnuevo.setText("Nuevo");
         btnnuevo.addActionListener(new java.awt.event.ActionListener() {
@@ -159,7 +168,19 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel6.setText("Ingrese nombre de usuario a buscar");
+        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtbuscarActionPerformed(evt);
+            }
+        });
+
+        jLabel6.setText("Ingrese plato a buscar");
+
+        jLabel7.setText("Descripción:");
+
+        jLabel8.setText("Precio:");
+
+        jLabel9.setText("Descuento:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -173,7 +194,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btngrabar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnnuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -183,29 +204,42 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
                         .addComponent(btneliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtbuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1)
-                            .addComponent(jLabel5))
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel7))
                         .addGap(40, 40, 40)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtusu)
-                            .addComponent(txtcod, javax.swing.GroupLayout.DEFAULT_SIZE, 221, Short.MAX_VALUE)
-                            .addComponent(cboEmpleado, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(119, 119, 119)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel3))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtpass, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cborol, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtDescripcion)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtCartaId, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtNombre)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel8)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(26, 26, 26)
+                                        .addComponent(jLabel9)))
+                                .addGap(10, 10, 10)
+                                .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -222,46 +256,51 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
                     .addComponent(txtbuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(txtcod, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3)
-                    .addComponent(cborol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCartaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtusu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4)
-                    .addComponent(txtpass, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8)
+                    .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9)
+                    .addComponent(txtDescuento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(txtDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(cboEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(45, Short.MAX_VALUE))
+                    .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     public void pasarDatosFila() {
-        if (tblusu.isEnabled()) {
-            int filaseleccionada = tblusu.getSelectedRow();
+        if (tblCarta.isEnabled()) {
+            int filaseleccionada = tblCarta.getSelectedRow();
 
-            int codigo = (int) tblusu.getValueAt(filaseleccionada, 0);
-            Usuario ou = new Usuario();
-            ou = UsuarioDAO.getUsuarioByID(codigo);
+            int codigo = (int) tblCarta.getValueAt(filaseleccionada, 0);
+            Carta ocarta = new Carta();
+            ocarta = CartaDAO.getCartaByID(codigo);
 
-            txtcod.setText("" + ou.getUsuarioId());
-            txtusu.setText(ou.getUsuario());
-            txtpass.setText(ou.getPassword());
-            cborol.setSelectedItem(ou.getRol());
-            if (ou.getEmpleadoName().length() > 0) {
-                cboEmpleado.setSelectedItem(ou.getEmpleadoName());
-            } else {
-                cboEmpleado.setSelectedIndex(0);
-            }
+            txtCartaId.setText("" + ocarta.getCartaId());
+            txtNombre.setText(ocarta.getNombre());
+            txtPrecio.setText(ocarta.getPrecio() + "");
+            txtDescripcion.setText(ocarta.getDescripcion());
+            txtDescuento.setText(ocarta.getDescuento() + "");
+            cboEstado.setSelectedItem(ocarta.getEstado());
+            cboCategoria.setSelectedItem(ocarta.getCategoria());
+
         }
 
     }
@@ -284,7 +323,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
     private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
         //controles(grabar,cancelar,nuevo,editar,eliminar,buscar,tabla,habilita)
-        if (txtusu.getText().equals("")) {
+        if (txtNombre.getText().equals("")) {
             Mensajes.msjmuestra("Favor de seleccionar una fila a actualizar");
         } else {
             controles(true, true, false, false, false, false, false, true);
@@ -294,22 +333,33 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
     public void listarUsuarios() {
         try {
-            tblusu.setModel(DbUtils.resultSetToTableModel(UsuarioDAO.getDataUsuario()));
+            tblCarta.setModel(DbUtils.resultSetToTableModel(CartaDAO.getDataCarta()));
         } catch (Exception e) {
-            Mensajes.msjmuestra("Error View al listar usuarios!!!");
+            Mensajes.msjmuestra("Error View al listar carta!!!");
         }
     }
 
     public void grabar() {
-        if (txtcod.getText().equals("0")) {
+        if (txtCartaId.getText().equals("0")) {
             try {
                 //Campos de tipo Objeto
-                Usuario ou = new Usuario();
-                ou.setUsuario(txtusu.getText());
-                ou.setPassword(txtpass.getText());
-                ou.setRol(cborol.getSelectedItem().toString());
-                ou.setEmpleadoId(UsuarioDAO.getIDempleadoxNombre(cboEmpleado.getSelectedItem().toString()));
-                if (UsuarioDAO.newusuario(ou) == true) {
+                Carta obj = new Carta();
+                obj.setNombre(txtNombre.getText());
+                obj.setDescripcion(txtDescripcion.getText());
+                obj.setEstado(cboEstado.getSelectedItem().toString());
+                obj.setCategoriaId(CartaDAO.getIDCategoriaPorNombre(cboCategoria.getSelectedItem().toString()));
+
+                if (txtPrecio.getText().length() > 0) {
+                    obj.setPrecio(Double.parseDouble(txtPrecio.getText()));
+                } else {
+                    obj.setPrecio(0.0);
+                }
+                if (txtDescuento.getText().length() > 0) {
+                    obj.setDescuento(Double.parseDouble(txtDescuento.getText()));
+                } else {
+                    obj.setDescuento(0.0);
+                }
+                if (CartaDAO.newCarta(obj) == true) {
                     Mensajes.msjmuestra("Grabado Correctamente!!!");
                 }
             } catch (Exception e) {
@@ -319,13 +369,25 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
         } else {
             try {
                 //Campos de tipo Objeto
-                Usuario ou = new Usuario();
-                ou.setUsuario(txtusu.getText());
-                ou.setPassword(txtpass.getText());
-                ou.setUsuarioId(Integer.parseInt(txtcod.getText()));
-                ou.setRol(cborol.getSelectedItem().toString());
-                ou.setEmpleadoId(UsuarioDAO.getIDempleadoxNombre(cboEmpleado.getSelectedItem().toString()));
-                if (UsuarioDAO.actualizarUsuario(ou) == true) {
+
+                Carta obj = new Carta();
+                obj.setCartaId(Integer.parseInt(txtCartaId.getText()));
+                obj.setNombre(txtNombre.getText());
+                obj.setDescripcion(txtDescripcion.getText());
+                obj.setEstado(cboEstado.getSelectedItem().toString());
+                obj.setCategoriaId(CartaDAO.getIDCategoriaPorNombre(cboCategoria.getSelectedItem().toString()));
+                obj.setNombre(txtDescripcion.getText());
+                if (txtPrecio.getText().length() > 0) {
+                    obj.setPrecio(Double.parseDouble(txtPrecio.getText()));
+                } else {
+                    obj.setPrecio(0.0);
+                }
+                if (txtDescuento.getText().length() > 0) {
+                    obj.setDescuento(Double.parseDouble(txtDescuento.getText()));
+                } else {
+                    obj.setDescuento(0.0);
+                }
+                if (CartaDAO.actualizarCarta(obj) == true) {
                     Mensajes.msjmuestra("Actualizado Correctamente!!!");
                 }
             } catch (Exception e) {
@@ -337,18 +399,16 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
     }
 
-    public static void cargarcomboPerfil(JComboBox combo) {
-        combo.addItem("ADMIN");
-        combo.addItem("VENTAS");
-        combo.addItem("COCINA");
+    public static void cargarcomboEstado(JComboBox combo) {
+        combo.addItem("DISPONIBLE");
+        combo.addItem("NO DISPONIBLE");
     }
 
-    public static void cargarcomboEmpleado(JComboBox combo, ResultSet rs) {
+    public static void cargarcomboCategoria(JComboBox combo, ResultSet rs) {
         try {
 //         combo.removeAllItems();
-            combo.addItem("-Seleccione-");
             while (rs.next()) {
-                combo.addItem(rs.getString("nombres"));
+                combo.addItem(rs.getString("descripcion"));
             }//Fin while
             rs.close();//Cierro el ResultSet
         } catch (Exception ex) {
@@ -359,12 +419,12 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
 
-        if (txtusu.getText().equals("")) {
+        if (txtNombre.getText().equals("")) {
             Mensajes.msjmuestra("Favor de seleccionar una fila a eliminar");
         } else {
             try {
-                int codigo = Integer.parseInt(txtcod.getText());
-                if (UsuarioDAO.deleteUsuario(codigo) == true) {
+                int codigo = Integer.parseInt(txtCartaId.getText());
+                if (CartaDAO.deleteCarta(codigo) == true) {
                     Mensajes.msjmuestra("Eliminado Correctamente!!!");
                     listarUsuarios();
                 }
@@ -377,27 +437,19 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
-        Usuario ou = new Usuario();
+        Carta ocarta = new Carta();
 
         try {
-            String buscar = txtbuscar.getText();
-            if (buscar.length() > 0) {
-                ou = UsuarioDAO.getUsuarioByNomUsu(buscar);
-                if (ou.getUsuario().length() > 0) {
-                    txtcod.setText("" + ou.getUsuarioId());
-                    txtusu.setText(ou.getUsuario());
-                    txtpass.setText(ou.getPassword());
-                    cborol.setSelectedItem(ou.getRol());
-                    cboEmpleado.setSelectedItem(ou.getEmpleadoName());
-                } else {
-                    Mensajes.msjmuestra("Codigo de usuario no Registrado");
-                }
-            } else {
-                Mensajes.msjmuestra("Ingres codigo de usuario a buscar");
+            String busqueda = txtbuscar.getText();
+
+            try {
+                tblCarta.setModel(DbUtils.resultSetToTableModel(CartaDAO.getDataCartaByDescripcion(busqueda)));
+            } catch (Exception e) {
+                Mensajes.msjmuestra("Error View al listar carta!!!");
             }
 
         } catch (Exception e) {
-            Mensajes.msjmuestra("Codigo de usuario no Registrado:" + e.getMessage());
+            Mensajes.msjmuestra("Elemento no encontrado:" + e.getMessage());
         }
 
     }//GEN-LAST:event_btnbuscarActionPerformed
@@ -412,6 +464,14 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
         this.cerrarVentana();
     }//GEN-LAST:event_btncancelarActionPerformed
 
+    private void cboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEstadoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cboEstadoActionPerformed
+
+    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtbuscarActionPerformed
+
     public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean eliminar, boolean buscar, boolean tabla, boolean habilita) {
         btngrabar.setVisible(grabar);
         btncancelar.setVisible(cancelar);
@@ -419,33 +479,36 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
         btneditar.setVisible(editar);
         btneliminar.setVisible(eliminar);
         btnbuscar.setVisible(buscar);
-        tblusu.setEnabled(tabla);
+        tblCarta.setEnabled(tabla);
         habilitarcontroles(habilita);
     }
 
     public void habilitarcontroles(boolean estado) {
-        txtcod.setEditable(estado);
-        txtusu.setEditable(estado);
-        txtpass.setEditable(estado);
-        cborol.setEditable(false);
-        cboEmpleado.setEditable(false);
+        txtCartaId.setEditable(estado);
+        txtNombre.setEditable(estado);
+        txtPrecio.setEditable(estado);
+        txtDescripcion.setEditable(estado);
+        txtDescuento.setEditable(estado);
+        cboEstado.setEditable(false);
+        cboCategoria.setEditable(false);
     }
 
     public void limpiar() {
-        txtcod.setText("0");
-        txtusu.setText("");
-        txtpass.setText("");
-        cborol.setSelectedIndex(0);
-        cboEmpleado.setSelectedIndex(0);
+        txtCartaId.setText("0");
+        txtNombre.setText("");
+        txtPrecio.setText("");
+        txtDescuento.setText("");
+        cboEstado.setSelectedIndex(0);
+        cboCategoria.setSelectedIndex(0);
     }
 
     public boolean validarcampos() {
-        if (txtcod.getText().equals("")) {
+        if (txtCartaId.getText().equals("")) {
             return false;
-        } else if (txtusu.getText().equals("")) {
+        } else if (txtNombre.getText().equals("")) {
             return false;
 
-        } else if (txtpass.getText().equals("")) {
+        } else if (txtPrecio.getText().equals("")) {
             return false;
         }
         return true;
@@ -461,19 +524,23 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
     private javax.swing.JButton btneliminar;
     private javax.swing.JButton btngrabar;
     private javax.swing.JButton btnnuevo;
-    private javax.swing.JComboBox<String> cboEmpleado;
-    private javax.swing.JComboBox<String> cborol;
+    private javax.swing.JComboBox<String> cboCategoria;
+    private javax.swing.JComboBox<String> cboEstado;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblusu;
+    private javax.swing.JTable tblCarta;
+    private javax.swing.JTextField txtCartaId;
+    private javax.swing.JTextField txtDescripcion;
+    private javax.swing.JTextField txtDescuento;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtPrecio;
     private javax.swing.JTextField txtbuscar;
-    private javax.swing.JTextField txtcod;
-    private javax.swing.JTextField txtpass;
-    private javax.swing.JTextField txtusu;
     // End of variables declaration//GEN-END:variables
 }
