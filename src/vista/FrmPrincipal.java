@@ -14,6 +14,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
     //Vriable Globales de Tipo JIFrame
     IfrmUsuarios oufrmusu;
     IfrmCarta oufrmmcarta;
+    IfrmMenu oufrmmmenu;
+    IfrmPedidosCocina oufrmmpedSolCocina;
 
     public FrmPrincipal() {
         initComponents();
@@ -89,6 +91,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         subMenuLaCarta.setSelected(true);
         subMenuLaCarta.setText("La Carta");
+        subMenuLaCarta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuLaCartaActionPerformed(evt);
+            }
+        });
         menuMenu.add(subMenuLaCarta);
 
         jMenuBar1.add(menuMenu);
@@ -166,7 +173,18 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuConfigMesasActionPerformed
 
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
-        // TODO add your handling code here:
+        if (estacerrado(oufrmmpedSolCocina)) {
+            oufrmmpedSolCocina = new IfrmPedidosCocina();
+            miescritorio.add(oufrmmpedSolCocina);
+            oufrmmpedSolCocina.show();
+        } else {
+            try {
+                oufrmmpedSolCocina.setMaximum(true);
+                oufrmmpedSolCocina.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuPedidosSolicitadosActionPerformed
 
     private void subMenuMantCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMantCartaActionPerformed
@@ -183,6 +201,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_subMenuMantCartaActionPerformed
+
+    private void subMenuLaCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLaCartaActionPerformed
+        if (estacerrado(oufrmmcarta)) {
+            oufrmmmenu = new IfrmMenu();
+            miescritorio.add(oufrmmmenu);
+            oufrmmmenu.show();
+        } else {
+            try {
+                oufrmmmenu.setMaximum(true);
+                oufrmmmenu.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_subMenuLaCartaActionPerformed
 
     /**
      * @param args the command line arguments

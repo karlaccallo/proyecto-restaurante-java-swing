@@ -424,7 +424,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
     }
 
     public void habilitarcontroles(boolean estado) {
-        txtcod.setEditable(estado);
+        txtcod.setEditable(false);
         txtusu.setEditable(estado);
         txtpass.setEditable(estado);
         cborol.setEditable(false);

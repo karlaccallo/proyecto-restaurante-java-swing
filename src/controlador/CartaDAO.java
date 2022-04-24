@@ -241,4 +241,54 @@ public class CartaDAO {
         }
         return ok;
     }
+     
+     public static ResultSet getDataCartaDisponible() {
+        ResultSet rs = null;
+        try {
+            String query = " select cartaid,nombre,p.descripcion,precio,descuento, "
+                    + "c.descripcion categoria, p.habilitado, estado from carta p "
+                    + "inner join categoria c on p.categoriaid=c.categoriaid where p.estado='DISPONIBLE'";
+
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error al Listar Carta " + e.getMessage());
+        }
+        return rs;
+    }
+     
+      public static ResultSet getDataCartaDisponibleByDescripcion(String cartaDesc) {
+        ResultSet rs = null;
+        try {
+            String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
+                     + "c.descripcion categoria, p.habilitado, estado " +
+                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
+                        "  where UPPER(p.descripcion) like UPPER('%"+cartaDesc+"%') and p.estado='DISPONIBLE'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error al Listar Carta " + e.getMessage());
+        }
+        return rs;
+    }
+      
+       public static ResultSet getPlatosByCategoria(String categoria) {
+        ResultSet rs = null;
+        try {
+           String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
+                     + "c.descripcion categoria, p.habilitado, estado " +
+                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
+                        "  where c.descripcion ='"+categoria+"' and p.estado='DISPONIBLE'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+           
+            Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
+        }
+        return rs;
+    }
 }

@@ -10,6 +10,7 @@ import net.proteanit.sql.DbUtils;
 import controlador.CartaDAO;
 import extras.Mensajes;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
@@ -178,9 +179,21 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
         jLabel7.setText("Descripción:");
 
+        txtPrecio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtPrecioKeyTyped(evt);
+            }
+        });
+
         jLabel8.setText("Precio:");
 
         jLabel9.setText("Descuento:");
+
+        txtDescuento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDescuentoKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -307,14 +320,14 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        listarUsuarios();
+        listarPlatos();
     }//GEN-LAST:event_formInternalFrameOpened
 
     private void btngrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngrabarActionPerformed
 
         if (validarcampos()) {
             grabar();
-            listarUsuarios();
+            listarPlatos();
         } else {
             Mensajes.msjmuestra("complete los datos");
         }
@@ -331,7 +344,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btneditarActionPerformed
 
-    public void listarUsuarios() {
+    public void listarPlatos() {
         try {
             tblCarta.setModel(DbUtils.resultSetToTableModel(CartaDAO.getDataCarta()));
         } catch (Exception e) {
@@ -426,7 +439,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
                 int codigo = Integer.parseInt(txtCartaId.getText());
                 if (CartaDAO.deleteCarta(codigo) == true) {
                     Mensajes.msjmuestra("Eliminado Correctamente!!!");
-                    listarUsuarios();
+                    listarPlatos();
                 }
             } catch (Exception e) {
                 Mensajes.msjmuestra("Error View al Eliminado!!!");
@@ -472,7 +485,29 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtbuscarActionPerformed
 
-    public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean eliminar, boolean buscar, boolean tabla, boolean habilita) {
+    private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
+        char c = evt.getKeyChar();
+        if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
+                && (c != '.')) {
+            evt.consume();
+        }
+        if (c == '.' && txtPrecio.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtPrecioKeyTyped
+
+    private void txtDescuentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescuentoKeyTyped
+         char c = evt.getKeyChar();
+        if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
+                && (c != '.')) {
+            evt.consume();
+        }
+        if (c == '.' && txtDescuento.getText().contains(".")) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtDescuentoKeyTyped
+
+public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean eliminar, boolean buscar, boolean tabla, boolean habilita) {
         btngrabar.setVisible(grabar);
         btncancelar.setVisible(cancelar);
         btnnuevo.setVisible(nuevo);
@@ -484,7 +519,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
     }
 
     public void habilitarcontroles(boolean estado) {
-        txtCartaId.setEditable(estado);
+        txtCartaId.setEditable(false);
         txtNombre.setEditable(estado);
         txtPrecio.setEditable(estado);
         txtDescripcion.setEditable(estado);
