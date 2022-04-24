@@ -16,8 +16,8 @@ import util.Conexionbd;
  * @author kccalloc
  */
 public class CartaDAO {
-    
-     //Retorname Usuarios
+
+    //Retorname Usuarios
     public static ResultSet getDataCarta() {
         ResultSet rs = null;
         try {
@@ -33,13 +33,14 @@ public class CartaDAO {
         }
         return rs;
     }
+
     public static ResultSet getDataCartaByDescripcion(String cartaDesc) {
         ResultSet rs = null;
         try {
             String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
-                     + "c.descripcion categoria, p.habilitado, estado " +
-                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
-                        "  where UPPER(p.descripcion) like UPPER('%"+cartaDesc+"%')";
+                    + "c.descripcion categoria, p.habilitado, estado "
+                    + "  from carta p inner join categoria c on p.categoriaid=c.categoriaid"
+                    + "  where UPPER(p.descripcion) like UPPER('%" + cartaDesc + "%')";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
 
             rs = pst.executeQuery();
@@ -49,12 +50,13 @@ public class CartaDAO {
         }
         return rs;
     }
-     public static Carta getCartaByID(int cartaId) {
+
+    public static Carta getCartaByID(int cartaId) {
 
         Carta obj = new Carta();
 
         try {
-             String query = " select cartaid,nombre,p.descripcion,precio,descuento, "
+            String query = " select cartaid,nombre,p.descripcion,precio,descuento, "
                     + "c.descripcion categoria, p.habilitado, estado from carta p "
                     + "inner join categoria c on p.categoriaid=c.categoriaid where p.cartaid=?";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
@@ -72,7 +74,7 @@ public class CartaDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return obj;
@@ -83,10 +85,10 @@ public class CartaDAO {
         Carta obj = new Carta();
 
         try {
-             String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
-                     + "c.descripcion categoria, p.habilitado, estado " +
-                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
-                        "  where UPPER(p.nombre) = UPPER('"+cartaDesc+"')";
+            String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
+                    + "c.descripcion categoria, p.habilitado, estado "
+                    + "  from carta p inner join categoria c on p.categoriaid=c.categoriaid"
+                    + "  where UPPER(p.nombre) = UPPER('" + cartaDesc + "')";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
@@ -101,12 +103,12 @@ public class CartaDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error BD: " + e.getMessage());
         }
         return obj;
     }
-    
+
     public static ResultSet getDataCategoria() {
         ResultSet rs = null;
         try {
@@ -115,7 +117,7 @@ public class CartaDAO {
             rs = pst.executeQuery();
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
         }
         return rs;
@@ -133,12 +135,12 @@ public class CartaDAO {
                 idCategoria = (rs.getInt(1));
             }
         } catch (Exception e) {
-            
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return idCategoria;
     }
-    
+
     public static boolean newCarta(Carta obj) {
         boolean ok = false;
         try {
@@ -157,7 +159,7 @@ public class CartaDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al guardar " + e.getMessage());
         }
         return ok;
@@ -167,7 +169,7 @@ public class CartaDAO {
         boolean ok = false;
 
         try {
-             String query = "update carta set Nombre=?,Descripcion=?,Precio=?,Descuento=?,CategoriaId=?,estado=?"
+            String query = "update carta set Nombre=?,Descripcion=?,Precio=?,Descuento=?,CategoriaId=?,estado=?"
                     + " where CartaId=?";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setString(1, obj.getNombre());
@@ -176,19 +178,19 @@ public class CartaDAO {
             pst.setDouble(4, obj.getDescuento());
             pst.setInt(5, obj.getCategoriaId());
             pst.setString(6, obj.getEstado());
-             pst.setInt(7, obj.getCartaId());
-             
+            pst.setInt(7, obj.getCartaId());
+
             if (pst.executeUpdate() > 0) {
                 ok = true;
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error:" + e.getMessage());
         }
         return ok;
     }
-    
+
     public static int generarIdCarta() {
         int nro = 0;
         try {
@@ -201,12 +203,13 @@ public class CartaDAO {
             nro = nro + 1;
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-          
+
             Mensajes.msjmuestra("Error al generar id " + e.getMessage());
         }
         return nro;
     }
-     public static int getIDCategoriaPorNombre(String categoria) {
+
+    public static int getIDCategoriaPorNombre(String categoria) {
         int categoriaid = 0;
 
         try {
@@ -218,13 +221,13 @@ public class CartaDAO {
                 categoriaid = (rs.getInt(1));
             }
         } catch (Exception e) {
-            
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return categoriaid;
     }
-     
-     public static boolean deleteCarta(int cod) {
+
+    public static boolean deleteCarta(int cod) {
         boolean ok = false;
         try {
             String query = "delete from carta where cartaid=?";
@@ -236,13 +239,13 @@ public class CartaDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al Eliminar " + e.getMessage());
         }
         return ok;
     }
-     
-     public static ResultSet getDataCartaDisponible() {
+
+    public static ResultSet getDataCartaDisponible() {
         ResultSet rs = null;
         try {
             String query = " select cartaid,nombre,p.descripcion,precio,descuento, "
@@ -257,14 +260,14 @@ public class CartaDAO {
         }
         return rs;
     }
-     
-      public static ResultSet getDataCartaDisponibleByDescripcion(String cartaDesc) {
+
+    public static ResultSet getDataCartaDisponibleByDescripcion(String cartaDesc) {
         ResultSet rs = null;
         try {
             String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
-                     + "c.descripcion categoria, p.habilitado, estado " +
-                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
-                        "  where UPPER(p.descripcion) like UPPER('%"+cartaDesc+"%') and p.estado='DISPONIBLE'";
+                    + "c.descripcion categoria, p.habilitado, estado "
+                    + "  from carta p inner join categoria c on p.categoriaid=c.categoriaid"
+                    + "  where UPPER(p.descripcion) like UPPER('%" + cartaDesc + "%') and p.estado='DISPONIBLE'";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
 
             rs = pst.executeQuery();
@@ -274,19 +277,72 @@ public class CartaDAO {
         }
         return rs;
     }
-      
-       public static ResultSet getPlatosByCategoria(String categoria) {
+
+    public static ResultSet getPlatosByCategoria(String categoria) {
         ResultSet rs = null;
         try {
-           String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
-                     + "c.descripcion categoria, p.habilitado, estado " +
-                        "  from carta p inner join categoria c on p.categoriaid=c.categoriaid" +
-                        "  where c.descripcion ='"+categoria+"' and p.estado='DISPONIBLE'";
+            String query = "select cartaid,nombre,p.descripcion,precio,descuento, "
+                    + "c.descripcion categoria, p.habilitado, estado "
+                    + "  from carta p inner join categoria c on p.categoriaid=c.categoriaid"
+                    + "  where c.descripcion ='" + categoria + "' and p.estado='DISPONIBLE'";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
+            Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
+        }
+        return rs;
+    }
+
+    public static int getIdCartaByNombre(String cartaNombre) {
+        int cartaId = 0;
+
+        try {
+            String query = "select cartaid from carta c where UPPER(nombre) = UPPER('" + cartaNombre + "')";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                cartaId = (rs.getInt(1));
+            }
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error BD: " + e.getMessage());
+        }
+
+        return cartaId;
+    }
+
+    public static double getPrecioCartaById(int id) {
+
+        double precio = 0;
+
+        try {
+            String query = "select precio - descuento from carta c where cartaid = ?";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setInt(1, id);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                precio = (rs.getInt(1));
+            }
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error BD: " + e.getMessage());
+        }
+
+        return precio;
+    }
+    
+     public static ResultSet getNombrePlatoByCategoria(String categoria) {
+        ResultSet rs = null;
+        try {
+            String query = "select nombre from carta p inner join categoria c on p.categoriaid=c.categoriaid"
+                    + "  where c.descripcion ='" + categoria + "' and p.estado='DISPONIBLE'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
             Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
         }
         return rs;

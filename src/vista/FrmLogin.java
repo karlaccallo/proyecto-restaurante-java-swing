@@ -14,7 +14,7 @@ import modelo.Usuario;
  * @author Padin
  */
 public class FrmLogin extends javax.swing.JFrame {
-
+public static String nombUsu="";
     /**
      * Creates new form FrmLogin
      */
@@ -77,22 +77,22 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnlog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btncan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btncan, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtpwd, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(txtpwd, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                             .addComponent(txtusu))))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
-                .addGap(81, 81, 81))
+                .addGap(114, 114, 114))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,7 +114,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
-        setSize(new java.awt.Dimension(309, 292));
+        setSize(new java.awt.Dimension(375, 292));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -124,8 +124,10 @@ public class FrmLogin extends javax.swing.JFrame {
             Usuario ou=new Usuario();
             ou.setUsuario(txtusu.getText());
             ou.setPassword(txtpwd.getText());
+            
             if(UsuarioDAO.inlogin(ou)>0){
                 Mensajes.msjmuestra("Bienvenido: " + txtusu.getText());
+                this.nombUsu=txtusu.getText();
                 FrmPrincipal op=new FrmPrincipal();
                 op.setExtendedState(MAXIMIZED_BOTH);
                op.show();

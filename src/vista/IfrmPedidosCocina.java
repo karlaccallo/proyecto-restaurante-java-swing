@@ -214,16 +214,15 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
             int filaseleccionada = tblDetallePedido.getSelectedRow();
 
             int numpedido = (int) tblDetallePedido.getValueAt(filaseleccionada, 0);
-            int cartaid = (int) tblDetallePedido.getValueAt(filaseleccionada, 0);
+            int cartaid = (int) tblDetallePedido.getValueAt(filaseleccionada, 1);
             DetallePedido odet = new DetallePedido();
             odet = DetallePedidoDAO.getDataDetallePedidoByCartaAndPedido(cartaid, numpedido);
-
+            
             txtCartaId.setText("" + odet.getCartaId());
             txtNumPedido.setText(odet.getNumPedido()+ "");
             txtNombre.setText(odet.getNombrePlato());
             txtDescripcion.setText(odet.getDescripcionPlato());
             cboEstado.setSelectedItem(odet.getNombreEstado());
-
         }
 
     }
