@@ -43,7 +43,7 @@ public class Conexionbd {
     usuario: kccalloc - password:123456
     usuario: lchoquehuanca - password:123456
     usuario: llopez - password:123456
-	usuario: oojeda - password:123456
-	usuario: cocina - password:cocina
+    usuario: oojeda - password:123456
+    usuario: cocina - password:cocina
 	
 ```
