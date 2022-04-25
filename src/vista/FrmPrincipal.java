@@ -16,6 +16,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
     IfrmCarta oufrmmcarta;
     IfrmMenu oufrmmmenu;
     IfrmPedidosCocina oufrmmpedSolCocina;
+    IfrmNotapedido oufrmNotaPedido;
+    Ifrmcomprobante oufrmComprobante;
 
     public FrmPrincipal() {
         initComponents();
@@ -47,6 +49,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
         menuMenu = new javax.swing.JMenu();
         subMenuLaCarta = new javax.swing.JCheckBoxMenuItem();
         menuPedidos = new javax.swing.JMenu();
+        subMenuPedidos = new javax.swing.JCheckBoxMenuItem();
+        subMenuComprobante = new javax.swing.JCheckBoxMenuItem();
         menuCocina = new javax.swing.JMenu();
         subMenuPedidosSolicitados = new javax.swing.JCheckBoxMenuItem();
         menuMesas = new javax.swing.JMenu();
@@ -101,6 +105,25 @@ public class FrmPrincipal extends javax.swing.JFrame {
         jMenuBar1.add(menuMenu);
 
         menuPedidos.setText("Pedidos");
+
+        subMenuPedidos.setSelected(true);
+        subMenuPedidos.setText("Solicitar Pedidos");
+        subMenuPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPedidosActionPerformed(evt);
+            }
+        });
+        menuPedidos.add(subMenuPedidos);
+
+        subMenuComprobante.setSelected(true);
+        subMenuComprobante.setText("Generar Comprobante");
+        subMenuComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuComprobanteActionPerformed(evt);
+            }
+        });
+        menuPedidos.add(subMenuComprobante);
+
         jMenuBar1.add(menuPedidos);
 
         menuCocina.setText("Cocina");
@@ -217,6 +240,36 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_subMenuLaCartaActionPerformed
 
+    private void subMenuPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosActionPerformed
+        if (estacerrado(oufrmNotaPedido)) {
+            oufrmNotaPedido = new IfrmNotapedido();
+            miescritorio.add(oufrmNotaPedido);
+            oufrmNotaPedido.show();
+        } else {
+            try {
+                oufrmNotaPedido.setMaximum(true);
+                oufrmNotaPedido.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_subMenuPedidosActionPerformed
+
+    private void subMenuComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuComprobanteActionPerformed
+        if (estacerrado(oufrmComprobante)) {
+            oufrmComprobante = new Ifrmcomprobante();
+            miescritorio.add(oufrmComprobante);
+            oufrmComprobante.show();
+        } else {
+            try {
+                oufrmComprobante.setMaximum(true);
+                oufrmComprobante.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        } 
+    }//GEN-LAST:event_subMenuComprobanteActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -262,9 +315,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuReportes;
     private javax.swing.JMenu menuTablas;
     private javax.swing.JDesktopPane miescritorio;
+    private javax.swing.JCheckBoxMenuItem subMenuComprobante;
     private javax.swing.JCheckBoxMenuItem subMenuConfigMesas;
     private javax.swing.JCheckBoxMenuItem subMenuLaCarta;
     private javax.swing.JMenuItem subMenuMantCarta;
+    private javax.swing.JCheckBoxMenuItem subMenuPedidos;
     private javax.swing.JCheckBoxMenuItem subMenuPedidosSolicitados;
     private javax.swing.JCheckBoxMenuItem subMenuReporte;
     private javax.swing.JMenuItem subMenuUsuario;
