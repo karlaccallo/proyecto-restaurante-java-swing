@@ -9,9 +9,12 @@ import modelo.DetallePedido;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -58,6 +61,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     }
 
     public void cargarcomboMesa(String camarero) {
+
         try {
             ResultSet rs;
             rs = NotaPedidoDAO.getNumeroMesaByNombreCamarero(camarero);
@@ -68,11 +72,13 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+
     }
 
     public void cargarComboCarta(String categoria) {
-        try {
 
+        try {
+            cbmd = new DefaultComboBoxModel();
             cboCarta.setModel(cbmd);
             ResultSet rsCarta;
             rsCarta = CartaDAO.getNombrePlatoByCategoria(categoria);
@@ -370,10 +376,10 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     }
 
     public boolean grabarDetallePedido(int numeroPedido, int carta, int cant, double precio, double imp) {
-        boolean ok=false;
+        boolean ok = false;
         try {
-            if (DetallePedidoDAO.grabarDetallePedido(numeroPedido,carta,cant,precio,imp) == true) {
-                ok=true;
+            if (DetallePedidoDAO.grabarDetallePedido(numeroPedido, carta, cant, precio, imp) == true) {
+                ok = true;
                 System.out.println("vista.IfrmNotapedido.grabarDetallePedido()--Grabado Correctamente!!!");
             }
         } catch (Exception e) {
@@ -382,7 +388,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         return ok;
     }
 
-    public void limpiar(){
+    public void limpiar() {
         mdl.setRowCount(0);
         mdl.setColumnCount(0);
         this.cabeza();
@@ -393,9 +399,9 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         txtValorPedido.setText("");
         cboCarta.setSelectedIndex(0);
         cboCategoria.setSelectedIndex(0);
-        
-         btnGrabar.setEnabled(false);
-         btnTotal.setEnabled(false);
+
+        btnGrabar.setEnabled(false);
+        btnTotal.setEnabled(false);
 
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
@@ -422,6 +428,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         cargarcomboCategoria(cboCategoria, rsCtegoria);
         //  cargarComboCarta(cboCategoria.getSelectedItem().toString());
         cargarcomboMesa(lblCamarero.getText());
+        
         btnGrabar.setEnabled(false);
         btnTotal.setEnabled(false);
     }//GEN-LAST:event_formInternalFrameOpened
@@ -447,7 +454,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
             double prec = Double.parseDouble(txtPrecio.getText());
             double imp = Double.parseDouble(txtImporte.getText());
 
-            mdl.addRow(new Object[]{cod, cant, prec, imp });
+            mdl.addRow(new Object[]{cod, cant, prec, imp});
             btnTotal.setEnabled(true);
         } else {
             Mensajes.msjmuestra("Favor de ingresar la cantidad");
@@ -456,16 +463,13 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
 
-        if(txtValorPedido.getText().length()>0){
-        }else{
-        }
         int numPedido = this.grabarPedido();
         int carta = 0;
         int cant = 0;
         double prec = 0.0;
         double imp = 0.0;
-        boolean grabado=false;
-        
+        boolean grabado = false;
+
         for (int f = 0; f < mdl.getRowCount(); f++) {
             for (int c = 0; c < mdl.getColumnCount(); c++) {
                 if (c == 0) {
@@ -481,12 +485,12 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
                     imp = Double.parseDouble(mdl.getValueAt(f, c).toString());
                 }
             }
-            grabado=this.grabarDetallePedido(numPedido, carta, cant, prec, imp);
+            grabado = this.grabarDetallePedido(numPedido, carta, cant, prec, imp);
         }
-        
-        if(grabado){
-             Mensajes.msjmuestra("Pedido grabado correctamente: Su número de pedido es:" + numPedido);
-        }else{
+
+        if (grabado) {
+            Mensajes.msjmuestra("Pedido grabado correctamente:\n Su número de pedido es: " + numPedido);
+        } else {
             Mensajes.msjmuestra("Ocurrió un error al grabar el pedido.");
         }
         mdl.setRowCount(0);
@@ -509,7 +513,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-       this.limpiar();
+        this.limpiar();
 
     }//GEN-LAST:event_btnLimpiarActionPerformed
 

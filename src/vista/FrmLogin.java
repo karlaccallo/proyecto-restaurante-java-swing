@@ -133,7 +133,7 @@ public static String nombUsu="";
                op.show();
                dispose();
             }else{
-                Mensajes.msjmuestra("Ups, algo esta mal!!!");
+                Mensajes.msjmuestra("Usuario no registrado!!!");
             }
         } catch (Exception e) {
             Mensajes.msjmuestra(e.getMessage());

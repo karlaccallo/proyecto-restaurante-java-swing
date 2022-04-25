@@ -62,14 +62,12 @@ public class DetallePedidoDAO {
         boolean ok = false;
 
         java.util.Date utilDate = new java.util.Date();
-        // java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
 
         try {
             String query = "update DetallePedido set EstadoDetalleId=?, fechahoratermino=?"
                     + " where CartaId=? and NumPedido=?";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setInt(1, obj.getEstadoDetalleId());
-            // pst.setDate(2, sqlDate);
             pst.setTimestamp(2, new java.sql.Timestamp(utilDate.getTime()));
             pst.setInt(3, obj.getCartaId());
             pst.setInt(4, obj.getNumPedido());

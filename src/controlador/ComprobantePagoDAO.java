@@ -5,10 +5,12 @@
  */
 package controlador;
 
+import controlador.NotaPedidoDAO;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Date;
+import modelo.ComprobantePago;
 import modelo.NotaPedido;
 import util.Conexionbd;
 
@@ -16,7 +18,7 @@ import util.Conexionbd;
  *
  * @author kccalloc
  */
-public class NotaPedidoDAO {
+public class ComprobantePagoDAO {
 
     public static int getNumeroPedidoRegistrado() {
         int nroPedido = 0;
@@ -35,100 +37,89 @@ public class NotaPedidoDAO {
         return nroPedido;
     }
 
-    public static int grabarPedido(NotaPedido obj) {
+    public static boolean grabarComprobante(ComprobantePago obj) {
 
         boolean ok = false;
-        int numPedido = 0;
         java.util.Date utilDate = new java.util.Date();
+        int idCliente=ComprobantePagoDAO.getIdClienteByDNI(obj.getDniCliente());
 
         try {
-            String query = "insert into NotaPedido values(?,?,?,?,1,'',1)";
+            String query = "insert into ComprobantePago values(?,?,?,?,?,?,?,?)";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setTimestamp(1, new java.sql.Timestamp(utilDate.getTime()));
-            pst.setDouble(2, obj.getMontoPagar());
-            pst.setInt(3, obj.getEmpleadoId());
-            pst.setInt(4, obj.getNumMesa());
+            pst.setInt(2, obj.getNumPedido());
+            pst.setDouble(3, obj.getSubTotal());
+            pst.setDouble(4, obj.getIGV());
+            pst.setDouble(5, obj.getTotal());
+            pst.setInt(6, idCliente);
+            pst.setInt(7, obj.getEmpleadoId());
+            pst.setInt(8, obj.getTipoComID());
 
             if (pst.executeUpdate() > 0) {
                 ok = true;
-                numPedido = getNumeroPedidoRegistrado();
+                NotaPedidoDAO.actualizarEstadoPedidoToProcesado(obj.getNumPedido());
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-
-            Mensajes.msjmuestra("Error:" + e.getMessage());
-        }
-
-        return numPedido;
-    }
-
-    public static ResultSet getNumeroMesaByNombreCamarero(String camarero) {
-        int idEmpleado = UsuarioDAO.getIDempleadoxNombre(camarero);
-
-        ResultSet rs = null;
-        try {
-            String query = "select numMesa from mesa m inner join MesaCamarero mc on m.MesaId=mc.MesaId "
-                    + "where EmpleadoId=? and GETDATE() between FechaInicio and FechaFin";
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setInt(1, idEmpleado);
-            rs = pst.executeQuery();
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-
-            Mensajes.msjmuestra("Error: " + e.getMessage());
-        }
-        return rs;
-    }
-
-    public static ResultSet getDetallePedidoByNumeroPedido(int numero) {
-        ResultSet rs = null;
-        String query = "select c.cartaid,c.descripcion,dp.precio,dp.cantidad, importe from DetallePedido as dp "
-                + "inner join carta as c on dp.cartaid=c.cartaid where dp.NumPedido= ?";
-        try {
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setInt(1, numero);
-            rs = pst.executeQuery();
-
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-            Mensajes.msjmuestra("Error: " + e.getMessage());
-        }
-        return rs;
-    }
-
-    public static double getTotalValorNotaPedidoByNumPedido(int nroPedido) {
-        double monto = 0;
-        try {
-            String query = "SELECT montopagar FROM NotaPedido where numpedido =?";
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setInt(1, nroPedido);
-            ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                monto = rs.getDouble(1);
-            }
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-
-            Mensajes.msjmuestra("Error al obtener el monto de pedido " + e.getMessage());
-        }
-        return monto;
-    }
-
-    public static boolean actualizarEstadoPedidoToProcesado(int numPedido) {
-        boolean ok = false;
-
-        try {
-            String query = "update NotaPedido set EstadoId =2 where NumPedido =?";
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setInt(1, numPedido);
-            if (pst.executeUpdate() > 0) {
-                ok = true;
-            }
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-
-            Mensajes.msjmuestra("Error:" + e.getMessage());
+            Mensajes.msjmuestra("Error al grabar comprobante:" + e.getMessage());
         }
         return ok;
+    }
+
+    public static String getNombresClienteByDNI(String dni) {
+        String nombre = "";
+
+        ResultSet rs = null;
+        try {
+            String query = "select clientename from cliente where numDoc=?";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setString(1, dni);
+            rs = pst.executeQuery();
+             if (rs.next()) {
+                nombre = (rs.getString(1));
+            }
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return nombre;
+    }
+    
+    public static int getIdClienteByDNI(String dni) {
+        int id = 0;
+
+        ResultSet rs = null;
+        try {
+            String query = "select clienteId from cliente where numDoc=?";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setString(1, dni);
+            rs = pst.executeQuery();
+             if (rs.next()) {
+                id = (rs.getInt(1));
+            }
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return id;
+    }
+    
+     public static int generarNumeroComprobante() {
+        int numComprobante = 0;
+        try {
+            String query = "SELECT MAX(NumComprobante) AS NumComprobante FROM ComprobantePago";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                numComprobante = rs.getInt(1)+1;
+            }
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error al obtener el numero de comprobante de pago " + e.getMessage());
+        }
+        return numComprobante;
     }
 }
