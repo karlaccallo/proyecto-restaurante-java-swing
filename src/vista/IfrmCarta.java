@@ -82,6 +82,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setTitle("Sistema de ventas SVA 1.1 / Formulario Mantenimiento de Carta");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

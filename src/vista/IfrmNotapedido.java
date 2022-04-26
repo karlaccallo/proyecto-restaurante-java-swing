@@ -7,6 +7,7 @@ import controlador.UsuarioDAO;
 import modelo.NotaPedido;
 import modelo.DetallePedido;
 import extras.Mensajes;
+import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -185,9 +186,14 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
         jLabel2.setText("Importe :  S/.");
 
+        txtCantidad.setMaximumSize(new java.awt.Dimension(4, 4));
+        txtCantidad.setMinimumSize(new java.awt.Dimension(1, 1));
         txtCantidad.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 txtCantidadKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantidadKeyTyped(evt);
             }
         });
 
@@ -364,14 +370,13 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     public int grabarPedido() {
         int idEmpleado = UsuarioDAO.getIDempleadoxNombre(lblCamarero.getText());
         double montoPagar = Double.parseDouble(txtValorPedido.getText());
-        int mesa = Integer.parseInt(cboNumMesa.getSelectedItem().toString());
-
+        String sMesa = cboNumMesa.getSelectedItem().toString();
+        int mesa = Integer.parseInt(sMesa);
         NotaPedido obj = new NotaPedido();
         obj.setMontoPagar(montoPagar);
         obj.setNumMesa(mesa);
         obj.setEmpleadoId(idEmpleado);
         int numeroPedido = NotaPedidoDAO.grabarPedido(obj);
-
         return numeroPedido;
     }
 
@@ -428,7 +433,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         cargarcomboCategoria(cboCategoria, rsCtegoria);
         //  cargarComboCarta(cboCategoria.getSelectedItem().toString());
         cargarcomboMesa(lblCamarero.getText());
-        
+
         btnGrabar.setEnabled(false);
         btnTotal.setEnabled(false);
     }//GEN-LAST:event_formInternalFrameOpened
@@ -444,6 +449,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
 
         this.cargarComboCarta(cboCategoria.getSelectedItem().toString());
+        txtImporte.setText("");
     }//GEN-LAST:event_cboCategoriaActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
@@ -456,6 +462,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
             mdl.addRow(new Object[]{cod, cant, prec, imp});
             btnTotal.setEnabled(true);
+            btnGrabar.setEnabled(false);
         } else {
             Mensajes.msjmuestra("Favor de ingresar la cantidad");
         }
@@ -463,42 +470,45 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
     private void btnGrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGrabarActionPerformed
 
-        int numPedido = this.grabarPedido();
-        int carta = 0;
-        int cant = 0;
-        double prec = 0.0;
-        double imp = 0.0;
-        boolean grabado = false;
-
-        for (int f = 0; f < mdl.getRowCount(); f++) {
-            for (int c = 0; c < mdl.getColumnCount(); c++) {
-                if (c == 0) {
-                    carta = Integer.parseInt(mdl.getValueAt(f, c).toString());
-                }
-                if (c == 1) {
-                    cant = Integer.parseInt(mdl.getValueAt(f, c).toString());
-                }
-                if (c == 2) {
-                    prec = Double.parseDouble(mdl.getValueAt(f, c).toString());
-                }
-                if (c == 3) {
-                    imp = Double.parseDouble(mdl.getValueAt(f, c).toString());
-                }
-            }
-            grabado = this.grabarDetallePedido(numPedido, carta, cant, prec, imp);
-        }
-
-        if (grabado) {
-            Mensajes.msjmuestra("Pedido grabado correctamente:\n Su número de pedido es: " + numPedido);
+        if (cboNumMesa.getSelectedItem()==null) {
+            Mensajes.msjmuestra("Su usuario no tiene mesas configuradas.\nFavor de contactar con su gerente!!! ");
         } else {
-            Mensajes.msjmuestra("Ocurrió un error al grabar el pedido.");
+            int numPedido = this.grabarPedido();
+            int carta = 0;
+            int cant = 0;
+            double prec = 0.0;
+            double imp = 0.0;
+            boolean grabado = false;
+
+            for (int f = 0; f < mdl.getRowCount(); f++) {
+                for (int c = 0; c < mdl.getColumnCount(); c++) {
+                    if (c == 0) {
+                        carta = Integer.parseInt(mdl.getValueAt(f, c).toString());
+                    }
+                    if (c == 1) {
+                        cant = Integer.parseInt(mdl.getValueAt(f, c).toString());
+                    }
+                    if (c == 2) {
+                        prec = Double.parseDouble(mdl.getValueAt(f, c).toString());
+                    }
+                    if (c == 3) {
+                        imp = Double.parseDouble(mdl.getValueAt(f, c).toString());
+                    }
+                }
+                grabado = this.grabarDetallePedido(numPedido, carta, cant, prec, imp);
+            }
+
+            if (grabado) {
+                Mensajes.msjmuestra("Pedido grabado correctamente:\n Su número de pedido es: " + numPedido);
+            } else {
+                Mensajes.msjmuestra("Ocurrió un error al grabar el pedido.");
+            }
+            mdl.setRowCount(0);
+            mdl.setColumnCount(0);
+
+            this.cabeza();
+            limpiar();
         }
-        mdl.setRowCount(0);
-        mdl.setColumnCount(0);
-
-        this.cabeza();
-        limpiar();
-
     }//GEN-LAST:event_btnGrabarActionPerformed
 
     private void btnTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTotalActionPerformed
@@ -518,10 +528,23 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void txtCantidadKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyReleased
-        double precio = Double.parseDouble(txtPrecio.getText());
-        int cant = Integer.parseInt(txtCantidad.getText());
-        txtImporte.setText("" + precio * cant);
+        if (txtCantidad.getText().length() > 0) {
+            double precio = Double.parseDouble(txtPrecio.getText());
+            int cant = Integer.parseInt(txtCantidad.getText());
+            txtImporte.setText("" + precio * cant);
+        }
+
     }//GEN-LAST:event_txtCantidadKeyReleased
+
+    private void txtCantidadKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadKeyTyped
+        char c = evt.getKeyChar();
+        if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)) {
+            evt.consume();
+        }
+        if (txtCantidad.getText().length() > 4) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_txtCantidadKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
