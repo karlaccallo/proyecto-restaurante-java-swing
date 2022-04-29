@@ -9,8 +9,6 @@ import extras.Mensajes;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
-import modelo.Carta;
 import modelo.DetallePedido;
 import util.Conexionbd;
 
@@ -151,5 +149,40 @@ public class DetallePedidoDAO {
         }
         return ok;
 
+    }
+    
+    public static ResultSet getDetallePedidoByNumeroPedido(int numero) {
+        ResultSet rs = null;
+        String query = "select c.cartaid,c.descripcion,dp.precio,dp.cantidad, importe from DetallePedido as dp "
+                + "inner join carta as c on dp.cartaid=c.cartaid where dp.NumPedido= ?";
+        try {
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setInt(1, numero);
+            rs = pst.executeQuery();
+
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return rs;
+    }
+    
+    public static ResultSet getDetallePedidoEmitidoByNumeroPedido(int numero) {
+        ResultSet rs = null;
+        String query = "select c.cartaid,c.descripcion,dp.precio,dp.cantidad, importe, "+
+                        "edp.Descripcion from DetallePedido as dp " +
+                        "inner join carta as c on dp.cartaid=c.cartaid " +
+                        "inner join EstadoDetallePedido edp on edp.EstadoIDetalleId=dp.EstadoDetalleId " +
+                        "where dp.NumPedido= ?";
+        try {
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setInt(1, numero);
+            rs = pst.executeQuery();
+
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return rs;
     }
 }

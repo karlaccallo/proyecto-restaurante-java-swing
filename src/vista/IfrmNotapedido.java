@@ -5,23 +5,14 @@ import controlador.DetallePedidoDAO;
 import controlador.NotaPedidoDAO;
 import controlador.UsuarioDAO;
 import modelo.NotaPedido;
-import modelo.DetallePedido;
 import extras.Mensajes;
 import java.awt.event.KeyEvent;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import net.proteanit.sql.DbUtils;
+import util.Utileria;
 
 /**
  *
@@ -38,7 +29,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         initComponents();
     }
 
-    private void cabeza() {
+    private void cabeceraDetalle() {
         tbldata.setModel(mdl);
         mdl.addColumn("CODIGO");
         mdl.addColumn("CANTIDAD");
@@ -159,6 +150,8 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         lblCamarero.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel5.setText("Fecha de Registro :");
+
+        txtFecha.setEditable(false);
 
         jLabel6.setText("Valor Pedido:  S/.");
 
@@ -358,15 +351,6 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public java.util.Date getDateUtil(String cadFecha) {
-        java.util.Date date = null;
-        try {
-            date = new java.text.SimpleDateFormat("dd-MM-yyyy").parse(cadFecha);
-        } catch (Exception e) {
-        }
-        return date;
-    }
-
     public int grabarPedido() {
         int idEmpleado = UsuarioDAO.getIDempleadoxNombre(lblCamarero.getText());
         double montoPagar = Double.parseDouble(txtValorPedido.getText());
@@ -396,7 +380,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
     public void limpiar() {
         mdl.setRowCount(0);
         mdl.setColumnCount(0);
-        this.cabeza();
+        this.cabeceraDetalle();
         txtCantidad.setText("");
         txtIdCarta.setText("");
         txtImporte.setText("");
@@ -410,12 +394,8 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
 
     }
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        java.util.Date f = new java.util.Date();
-        int año = f.getYear() + 1900;
-        int mes = f.getMonth() + 1;
-        int dia = f.getDate();
-        String hoy = dia + "-" + mes + "-" + año;
-        txtFecha.setText(hoy);
+
+        txtFecha.setText(Utileria.getFechaActualToString());
         FrmLogin oa = new FrmLogin();
         String nombreUsuario = oa.nombUsu;
         lblCamarero.setText(UsuarioDAO.getNombreCamareroByNombreUsuario(nombreUsuario));
@@ -426,12 +406,11 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
         txtValorPedido.setEditable(false);
         txtImporte.setEditable(false);
 
-        this.cabeza();
+        this.cabeceraDetalle();
 
         ResultSet rsCtegoria;
         rsCtegoria = CartaDAO.getDataCategoria();
         cargarcomboCategoria(cboCategoria, rsCtegoria);
-        //  cargarComboCarta(cboCategoria.getSelectedItem().toString());
         cargarcomboMesa(lblCamarero.getText());
 
         btnGrabar.setEnabled(false);
@@ -506,7 +485,7 @@ public class IfrmNotapedido extends javax.swing.JInternalFrame {
             mdl.setRowCount(0);
             mdl.setColumnCount(0);
 
-            this.cabeza();
+            this.cabeceraDetalle();
             limpiar();
         }
     }//GEN-LAST:event_btnGrabarActionPerformed

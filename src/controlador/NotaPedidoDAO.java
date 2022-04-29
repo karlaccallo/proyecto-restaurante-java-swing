@@ -8,7 +8,6 @@ package controlador;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
 import modelo.NotaPedido;
 import util.Conexionbd;
 
@@ -80,22 +79,6 @@ public class NotaPedidoDAO {
         return rs;
     }
 
-    public static ResultSet getDetallePedidoByNumeroPedido(int numero) {
-        ResultSet rs = null;
-        String query = "select c.cartaid,c.descripcion,dp.precio,dp.cantidad, importe from DetallePedido as dp "
-                + "inner join carta as c on dp.cartaid=c.cartaid where dp.NumPedido= ?";
-        try {
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setInt(1, numero);
-            rs = pst.executeQuery();
-
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-            Mensajes.msjmuestra("Error: " + e.getMessage());
-        }
-        return rs;
-    }
-
     public static double getTotalValorNotaPedidoByNumPedido(int nroPedido) {
         double monto = 0;
         try {
@@ -130,5 +113,26 @@ public class NotaPedidoDAO {
             Mensajes.msjmuestra("Error:" + e.getMessage());
         }
         return ok;
+    }
+    
+    public static ResultSet getPedidosPendientesByCamarero(int EmpleadoId) {
+        ResultSet rs = null;
+        try {
+            String query = "select np.numpedido, np.FechaHoraSolicitud,np.NumMesa,np.MontoPagar, ep.Descripcion\n" +
+                            "from NotaPedido dp " +
+                            "inner join EstadoPedido ep on dp.EstadoId=ep.EstadoId " +
+                            "inner join notapedido np on np.NumPedido=dp.NumPedido " +
+                            "inner join Empleado e on e.EmpleadoId=np.EmpleadoId " +
+                            "where UPPER(ep.Descripcion) in ('Emitido') " +
+                            "and e.EmpleadoId='"+EmpleadoId+"' " +
+                            "order by np.FechaHoraSolicitud asc";
+
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error al Listar Pedidos " + e.getMessage());
+        }
+        return rs;
     }
 }

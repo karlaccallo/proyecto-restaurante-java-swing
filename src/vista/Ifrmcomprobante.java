@@ -10,16 +10,11 @@ import controlador.ComprobantePagoDAO;
 import controlador.DetallePedidoDAO;
 import extras.Mensajes;
 import static extras.Mensajes.miInput;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
 import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
 import javax.swing.table.DefaultTableModel;
 import modelo.ComprobantePago;
-import modelo.NotaPedido;
+import util.Utileria;
 
 /**
  *
@@ -43,7 +38,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         bg.add(rbdfact);
     }
 
-    private void cabeza() {
+    private void cabeceraDetalle() {
         tbldata.setModel(mdl);
         mdl.addColumn("CODIGO");
         mdl.addColumn("DESCRIPCION");
@@ -123,6 +118,8 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         lblcli.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel6.setText("Cliente :");
+
+        txtfecha.setEditable(false);
 
         tbldata.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -294,15 +291,6 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         return cliente;
     }
 
-    public java.util.Date getDateUtil(String cadFecha) {
-        java.util.Date date = null;
-        try {
-            date = new java.text.SimpleDateFormat("dd-MM-yyyy").parse(cadFecha);
-        } catch (Exception e) {
-        }
-        return date;
-    }
-
     private void grabar() {
 
         if (rbdbol.isSelected() == true) {
@@ -334,12 +322,12 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
     private void limpiar() {
         mdl.setRowCount(0);
         mdl.setColumnCount(0);
-        this.cabeza();
+        this.cabeceraDetalle();
         txtigv.setText("");
         txtsubtotal.setText("");
         txttotal.setText("");
         btngrabar.setEnabled(false);
-        lblcli.setText("");
+       
     }
 
     //////////////////////////
@@ -351,23 +339,25 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         if (lblcli.getText().length() == 0) {
             Mensajes.msjmuestra("Favor de elegir un cliente");
         } else {
-            this.grabar();
-            this.limpiar();
-             lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
+            if (ComprobantePagoDAO.existePedidoGrabado(numpedi)) {
+                Mensajes.msjmuestra("El pedido indicado ya tiene comprobante de pago generado!!!");
+            } else {
+                this.grabar();
+                this.limpiar();
+                lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
+            }
+
         }
     }//GEN-LAST:event_btngrabarActionPerformed
 
     private void btnlimp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlimp1ActionPerformed
+        lblcli.setText("");
         limpiar();
     }//GEN-LAST:event_btnlimp1ActionPerformed
 
     private void formInternalFrameOpened(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameOpened
-        java.util.Date f = new java.util.Date();
-        int año = f.getYear() + 1900;
-        int mes = f.getMonth() + 1;
-        int dia = f.getDate();
-        String hoy = dia + "-" + mes + "-" + año;
-        txtfecha.setText(hoy);
+
+        txtfecha.setText(Utileria.getFechaActualToString());
         FrmLogin oa = new FrmLogin();
         String nombreUsuario = oa.nombUsu;
         lblempleado.setText(UsuarioDAO.getNombreCamareroByNombreUsuario(nombreUsuario));
@@ -376,7 +366,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         txtigv.setEditable(false);
         txtsubtotal.setEditable(false);
         txttotal.setEditable(false);
-        this.cabeza();
+        this.cabeceraDetalle();
 
     }//GEN-LAST:event_formInternalFrameOpened
 
@@ -388,7 +378,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
     private void llenandoDetalle() {
 
         try {
-            ResultSet rs = NotaPedidoDAO.getDetallePedidoByNumeroPedido(numpedi);
+            ResultSet rs = DetallePedidoDAO.getDetallePedidoByNumeroPedido(numpedi);
             int column = 5;
             Object data[] = new Object[column];
             while (rs.next()) {
@@ -415,8 +405,8 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
                 numpedi = Integer.parseInt(pedido);
                 this.llenandoDetalle();
                 double total = NotaPedidoDAO.getTotalValorNotaPedidoByNumPedido(numpedi);
-                double igv = total * 0.18;
-                txtsubtotal.setText("" + Math.round((total - igv) * 100.0) / 100.0);
+                double igv = Math.round(((total * 0.18)*100.0)/100.0);
+                txtsubtotal.setText("" + (total - igv));
                 txtigv.setText("" + igv);
                 txttotal.setText("" + total);
                 if (total > 0) {

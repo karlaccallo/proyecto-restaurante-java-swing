@@ -5,13 +5,10 @@
  */
 package controlador;
 
-import controlador.NotaPedidoDAO;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.Date;
 import modelo.ComprobantePago;
-import modelo.NotaPedido;
 import util.Conexionbd;
 
 /**
@@ -122,4 +119,20 @@ public class ComprobantePagoDAO {
         }
         return numComprobante;
     }
+     
+     public static boolean existePedidoGrabado(int numPedido) {
+        boolean existe = false;
+        
+        try {
+            String query = "select NumPedido from ComprobantePago c where NumPedido='"+numPedido+"'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            existe = rs.next();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error en base de datos " + e.getMessage());
+        }
+        return existe;
+    }
+     
 }

@@ -8,12 +8,13 @@ package controlador;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import modelo.Usuario;
 import util.Conexionbd;
 
 /**
  *
- * @author Padin
+ * @author Kccalloc
  */
 public class UsuarioDAO {
 
@@ -49,7 +50,7 @@ public class UsuarioDAO {
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
             Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
+        } catch (SQLException e) {
 
             Mensajes.msjmuestra("Error al Listar Usuarios " + e.getMessage());
         }
@@ -194,10 +195,6 @@ public class UsuarioDAO {
             String query = "select nombre +' ' + apellido as nombres from empleado";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
-            //Siempre Cerrar
-            //   pst.close();
-            //   rs.close();
-            //Cerrar Conexion
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
 

@@ -70,6 +70,7 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
         jLabel7 = new javax.swing.JLabel();
         txtNumPedido = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -139,13 +140,20 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Numero pedido:");
 
+        btnRefrescar.setText("Refrescar lista");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -167,16 +175,21 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
                                 .addGap(26, 26, 26)
                                 .addComponent(cboEstado, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(txtDescripcion)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                    .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1073, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
                                 .addComponent(btngrabar, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(btncancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(25, 25, 25)
-                                .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btneditar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1073, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -186,9 +199,10 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btngrabar)
                     .addComponent(btneditar)
-                    .addComponent(btncancelar))
+                    .addComponent(btncancelar)
+                    .addComponent(btnRefrescar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 263, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
@@ -246,7 +260,7 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btngrabarActionPerformed
 
     private void btneditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneditarActionPerformed
-        //controles(grabar,cancelar,nuevo,editar,eliminar,buscar,tabla,habilita)
+      
         if (txtNombre.getText().equals("")) {
             Mensajes.msjmuestra("Favor de seleccionar una fila a actualizar");
         } else {
@@ -267,7 +281,6 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
 
         try {
             //Campos de tipo Objeto
-
             DetallePedido obj = new DetallePedido();
             obj.setCartaId(Integer.parseInt(txtCartaId.getText()));
             obj.setNumPedido(Integer.parseInt(txtNumPedido.getText()));
@@ -279,7 +292,6 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
         } catch (Exception e) {
             Mensajes.msjmuestra("Error View al Actualizado!!!");
         }
-
         //controles(grabar,cancelar,nuevo,editar,eliminar,buscar,tabla,habilita)
         controles(false, false, true, true, true, false);
 
@@ -292,20 +304,23 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
 
     public static void cargarcomboCategoria(JComboBox combo, ResultSet rs) {
         try {
-//         combo.removeAllItems();
             while (rs.next()) {
                 combo.addItem(rs.getString("descripcion"));
-            }//Fin while
-            rs.close();//Cierro el ResultSet
+            }
+            rs.close();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());//Capturo e imprimo el error
-        }//Fin try
-    }//fin funcion
+            System.out.println(ex.getMessage());
+        }
+    }
 
 
     private void btncancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncancelarActionPerformed
         this.cerrarVentana();
     }//GEN-LAST:event_btncancelarActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        listarPedidosSolicitados();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
 
     public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean tabla, boolean habilita) {
         btngrabar.setVisible(grabar);
@@ -346,6 +361,7 @@ public class IfrmPedidosCocina extends javax.swing.JInternalFrame {
         this.dispose();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JButton btncancelar;
     private javax.swing.JButton btneditar;
     private javax.swing.JButton btngrabar;
