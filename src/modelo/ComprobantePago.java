@@ -5,8 +5,8 @@
  */
 package modelo;
 
-import java.sql.Date;
-import jxl.write.DateTime;
+import java.util.Date;
+
 
 /**
  *

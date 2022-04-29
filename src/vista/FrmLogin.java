@@ -12,9 +12,10 @@ import modelo.Usuario;
 
 /**
  *
- * @author Padin
+ * @author Kccalloc
  */
 public class FrmLogin extends javax.swing.JFrame {
+    
 public static String nombUsu="";
     /**
      * Creates new form FrmLogin
@@ -105,8 +106,8 @@ public static String nombUsu="";
                         .addComponent(jLabel3)
                         .addGap(114, 114, 114))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(62, 62, 62))))
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

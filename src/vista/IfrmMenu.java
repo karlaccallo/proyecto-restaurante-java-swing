@@ -110,12 +110,6 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Categoria:");
 
-        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtbuscarActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("Ingrese plato a buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -174,15 +168,14 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
     public static void cargarcomboCategoria(JComboBox combo, ResultSet rs) {
         try {
-//         combo.removeAllItems();
             while (rs.next()) {
                 combo.addItem(rs.getString("descripcion"));
-            }//Fin while
-            rs.close();//Cierro el ResultSet
+            }
+            rs.close();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());//Capturo e imprimo el error
-        }//Fin try
-    }//fin funcion
+            System.out.println(ex.getMessage());
+        }
+    }
 
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
@@ -202,10 +195,6 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btnbuscarActionPerformed
-
-    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtbuscarActionPerformed
 
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
         
