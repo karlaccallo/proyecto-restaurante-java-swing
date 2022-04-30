@@ -8,6 +8,7 @@ package vista;
 import extras.Mensajes;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
+import util.Utileria;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
@@ -59,6 +60,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
         subMenuConfigMesas = new javax.swing.JCheckBoxMenuItem();
         menuReportes = new javax.swing.JMenu();
         subMenuReporte = new javax.swing.JCheckBoxMenuItem();
+        menuSalir = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -170,6 +173,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
         menuReportes.add(subMenuReporte);
 
         jMenuBar1.add(menuReportes);
+
+        menuSalir.setText("Salir");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Salir");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuSalir.add(jCheckBoxMenuItem1);
+
+        jMenuBar1.add(menuSalir);
 
         setJMenuBar(jMenuBar1);
 
@@ -297,6 +313,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_subMenuPedidosPendientesActionPerformed
 
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        Utileria.salir();
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -334,12 +354,14 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenu menuCocina;
     private javax.swing.JMenu menuMenu;
     private javax.swing.JMenu menuMesas;
     private javax.swing.JMenu menuPeticiones;
     private javax.swing.JMenu menuReportes;
+    private javax.swing.JMenu menuSalir;
     private javax.swing.JMenu menuTablas;
     private javax.swing.JDesktopPane miescritorio;
     private javax.swing.JCheckBoxMenuItem subMenuComprobante;
