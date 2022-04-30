@@ -8,12 +8,13 @@ package controlador;
 import extras.Mensajes;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import modelo.Usuario;
 import util.Conexionbd;
 
 /**
  *
- * @author Padin
+ * @author Kccalloc
  */
 public class UsuarioDAO {
 
@@ -49,8 +50,8 @@ public class UsuarioDAO {
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
             Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
-           
+        } catch (SQLException e) {
+
             Mensajes.msjmuestra("Error al Listar Usuarios " + e.getMessage());
         }
         return rs;
@@ -59,7 +60,7 @@ public class UsuarioDAO {
     public static int generarCodUsuario() {
         int nro = 0;
         try {
-            String query = "SELECT MAX(usuarioid)+1 AS id FROM usuario";
+            String query = "SELECT MAX(usuarioid) AS id FROM usuario";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             if (rs.next()) {
@@ -68,7 +69,7 @@ public class UsuarioDAO {
             nro = nro + 1;
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-          
+
             Mensajes.msjmuestra("Error al generar id " + e.getMessage());
         }
         return nro;
@@ -88,7 +89,7 @@ public class UsuarioDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al guardar " + e.getMessage());
         }
         return ok;
@@ -110,7 +111,7 @@ public class UsuarioDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error:" + e.getMessage());
         }
         return ok;
@@ -137,7 +138,7 @@ public class UsuarioDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return u;
@@ -164,7 +165,7 @@ public class UsuarioDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return u;
@@ -182,7 +183,7 @@ public class UsuarioDAO {
             }
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al Eliminar " + e.getMessage());
         }
         return ok;
@@ -194,13 +195,9 @@ public class UsuarioDAO {
             String query = "select nombre +' ' + apellido as nombres from empleado";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
-            //Siempre Cerrar
-            //   pst.close();
-            //   rs.close();
-            //Cerrar Conexion
             Conexionbd.cerrarBD(Conexionbd.ConBD());
         } catch (Exception e) {
-           
+
             Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
         }
         return rs;
@@ -218,10 +215,28 @@ public class UsuarioDAO {
                 idempleado = (rs.getInt(1));
             }
         } catch (Exception e) {
-            
+
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return idempleado;
+    }
+
+    public static String getNombreCamareroByNombreUsuario(String usuario) {
+        String nombre = "";
+        try {
+            String query = "select e.nombre +' '+e.apellido nombres FROM usuario u " +
+                            "join empleado e on u.empleadoid=e.empleadoid where usuario=?";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setString(1, usuario);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                nombre = (rs.getString(1));
+            }
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return nombre;
     }
 
 }

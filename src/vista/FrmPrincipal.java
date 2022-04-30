@@ -16,6 +16,9 @@ public class FrmPrincipal extends javax.swing.JFrame {
     IfrmCarta oufrmmcarta;
     IfrmMenu oufrmmmenu;
     IfrmPedidosCocina oufrmmpedSolCocina;
+    IfrmNotapedido oufrmNotaPedido;
+    Ifrmcomprobante oufrmComprobante;
+    IfrmPedidosPendientes oufrmPedidosPendientes;
 
     public FrmPrincipal() {
         initComponents();
@@ -46,7 +49,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
         subMenuMantCarta = new javax.swing.JMenuItem();
         menuMenu = new javax.swing.JMenu();
         subMenuLaCarta = new javax.swing.JCheckBoxMenuItem();
-        menuPedidos = new javax.swing.JMenu();
+        menuPeticiones = new javax.swing.JMenu();
+        subMenuPedidos = new javax.swing.JCheckBoxMenuItem();
+        subMenuComprobante = new javax.swing.JCheckBoxMenuItem();
+        subMenuPedidosPendientes = new javax.swing.JCheckBoxMenuItem();
         menuCocina = new javax.swing.JMenu();
         subMenuPedidosSolicitados = new javax.swing.JCheckBoxMenuItem();
         menuMesas = new javax.swing.JMenu();
@@ -67,7 +73,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             .addGap(0, 309, Short.MAX_VALUE)
         );
 
-        menuTablas.setText("Tablas");
+        menuTablas.setText("Mantenimiento");
 
         subMenuUsuario.setText("Usuarios");
         subMenuUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -100,8 +106,36 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(menuMenu);
 
-        menuPedidos.setText("Pedidos");
-        jMenuBar1.add(menuPedidos);
+        menuPeticiones.setText("Peticiones");
+
+        subMenuPedidos.setSelected(true);
+        subMenuPedidos.setText("Solicitar Pedidos");
+        subMenuPedidos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPedidosActionPerformed(evt);
+            }
+        });
+        menuPeticiones.add(subMenuPedidos);
+
+        subMenuComprobante.setSelected(true);
+        subMenuComprobante.setText("Generar Comprobante");
+        subMenuComprobante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuComprobanteActionPerformed(evt);
+            }
+        });
+        menuPeticiones.add(subMenuComprobante);
+
+        subMenuPedidosPendientes.setSelected(true);
+        subMenuPedidosPendientes.setText("Peticiones pendientes");
+        subMenuPedidosPendientes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuPedidosPendientesActionPerformed(evt);
+            }
+        });
+        menuPeticiones.add(subMenuPedidosPendientes);
+
+        jMenuBar1.add(menuPeticiones);
 
         menuCocina.setText("Cocina");
 
@@ -217,6 +251,52 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_subMenuLaCartaActionPerformed
 
+    private void subMenuPedidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosActionPerformed
+        if (estacerrado(oufrmNotaPedido)) {
+            oufrmNotaPedido = new IfrmNotapedido();
+            miescritorio.add(oufrmNotaPedido);
+            oufrmNotaPedido.show();
+        } else {
+            try {
+                oufrmNotaPedido.setMaximum(true);
+                oufrmNotaPedido.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
+    }//GEN-LAST:event_subMenuPedidosActionPerformed
+
+    private void subMenuComprobanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuComprobanteActionPerformed
+        if (estacerrado(oufrmComprobante)) {
+            oufrmComprobante = new Ifrmcomprobante();
+            miescritorio.add(oufrmComprobante);
+            oufrmComprobante.show();
+        } else {
+            try {
+                oufrmComprobante.setMaximum(true);
+                oufrmComprobante.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        } 
+    }//GEN-LAST:event_subMenuComprobanteActionPerformed
+
+    private void subMenuPedidosPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosPendientesActionPerformed
+  
+          if (estacerrado(oufrmPedidosPendientes)) {
+            oufrmPedidosPendientes = new IfrmPedidosPendientes();
+            miescritorio.add(oufrmPedidosPendientes);
+            oufrmPedidosPendientes.show();
+        } else {
+            try {
+                oufrmPedidosPendientes.setMaximum(true);
+                oufrmPedidosPendientes.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        } 
+    }//GEN-LAST:event_subMenuPedidosPendientesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,13 +338,16 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu menuCocina;
     private javax.swing.JMenu menuMenu;
     private javax.swing.JMenu menuMesas;
-    private javax.swing.JMenu menuPedidos;
+    private javax.swing.JMenu menuPeticiones;
     private javax.swing.JMenu menuReportes;
     private javax.swing.JMenu menuTablas;
     private javax.swing.JDesktopPane miescritorio;
+    private javax.swing.JCheckBoxMenuItem subMenuComprobante;
     private javax.swing.JCheckBoxMenuItem subMenuConfigMesas;
     private javax.swing.JCheckBoxMenuItem subMenuLaCarta;
     private javax.swing.JMenuItem subMenuMantCarta;
+    private javax.swing.JCheckBoxMenuItem subMenuPedidos;
+    private javax.swing.JCheckBoxMenuItem subMenuPedidosPendientes;
     private javax.swing.JCheckBoxMenuItem subMenuPedidosSolicitados;
     private javax.swing.JCheckBoxMenuItem subMenuReporte;
     private javax.swing.JMenuItem subMenuUsuario;

@@ -34,7 +34,6 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
                 }
             }
         });
-        //finaliza
         //controles(grabar,cancelar,nuevo,editar,eliminar,buscar,tabla,habilita)
         controles(false, false, true, true, true, true, true, false);
 
@@ -82,6 +81,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setTitle("Sistema de ventas SVA 1.1 / Formulario Mantenimiento de Carta");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -112,12 +112,6 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
             }
         ));
         jScrollPane1.setViewportView(tblCarta);
-
-        cboEstado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cboEstadoActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("CartaId");
 
@@ -166,12 +160,6 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
         btncancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btncancelarActionPerformed(evt);
-            }
-        });
-
-        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtbuscarActionPerformed(evt);
             }
         });
 
@@ -419,15 +407,14 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
 
     public static void cargarcomboCategoria(JComboBox combo, ResultSet rs) {
         try {
-//         combo.removeAllItems();
             while (rs.next()) {
                 combo.addItem(rs.getString("descripcion"));
-            }//Fin while
-            rs.close();//Cierro el ResultSet
+            }
+            rs.close();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());//Capturo e imprimo el error
-        }//Fin try
-    }//fin funcion
+        }
+    }
 
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
@@ -445,8 +432,6 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
                 Mensajes.msjmuestra("Error View al Eliminado!!!");
             }
         }
-
-
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
@@ -477,14 +462,6 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
         this.cerrarVentana();
     }//GEN-LAST:event_btncancelarActionPerformed
 
-    private void cboEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboEstadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cboEstadoActionPerformed
-
-    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtbuscarActionPerformed
-
     private void txtPrecioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPrecioKeyTyped
         char c = evt.getKeyChar();
         if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
@@ -497,7 +474,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_txtPrecioKeyTyped
 
     private void txtDescuentoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDescuentoKeyTyped
-         char c = evt.getKeyChar();
+        char c = evt.getKeyChar();
         if (((c < '0') || (c > '9')) && (c != KeyEvent.VK_BACK_SPACE)
                 && (c != '.')) {
             evt.consume();
@@ -507,7 +484,7 @@ public class IfrmCarta extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_txtDescuentoKeyTyped
 
-public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean eliminar, boolean buscar, boolean tabla, boolean habilita) {
+    public void controles(boolean grabar, boolean cancelar, boolean nuevo, boolean editar, boolean eliminar, boolean buscar, boolean tabla, boolean habilita) {
         btngrabar.setVisible(grabar);
         btncancelar.setVisible(cancelar);
         btnnuevo.setVisible(nuevo);

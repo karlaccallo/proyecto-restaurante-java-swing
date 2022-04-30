@@ -59,6 +59,8 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setMaximizable(true);
+        setTitle("Sistema de ventas SVA 1.1 / Formulario La Carta");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -88,6 +90,9 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
             }
         ));
+        tblCarta.setGridColor(new java.awt.Color(255, 255, 102));
+        tblCarta.setRowHeight(30);
+        tblCarta.setRowMargin(2);
         jScrollPane1.setViewportView(tblCarta);
 
         btnbuscar.setText("Buscar");
@@ -105,12 +110,6 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
         jLabel5.setText("Categoria:");
 
-        txtbuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtbuscarActionPerformed(evt);
-            }
-        });
-
         jLabel6.setText("Ingrese plato a buscar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -120,7 +119,7 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 879, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1075, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addGap(21, 21, 21)
@@ -144,8 +143,8 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
                     .addComponent(cboCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 437, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -169,15 +168,14 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
 
     public static void cargarcomboCategoria(JComboBox combo, ResultSet rs) {
         try {
-//         combo.removeAllItems();
             while (rs.next()) {
                 combo.addItem(rs.getString("descripcion"));
-            }//Fin while
-            rs.close();//Cierro el ResultSet
+            }
+            rs.close();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());//Capturo e imprimo el error
-        }//Fin try
-    }//fin funcion
+            System.out.println(ex.getMessage());
+        }
+    }
 
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed
@@ -197,10 +195,6 @@ public class IfrmMenu extends javax.swing.JInternalFrame {
         }
 
     }//GEN-LAST:event_btnbuscarActionPerformed
-
-    private void txtbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtbuscarActionPerformed
 
     private void cboCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboCategoriaActionPerformed
         

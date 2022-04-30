@@ -27,7 +27,6 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
                 Point point = Mouse_evt.getPoint();
                 int row = table.rowAtPoint(point);
                 if (Mouse_evt.getClickCount() == 1) {
-                    //          Mensajes.msjmuestra(""+tblusu.getValueAt(tblusu.getSelectedRow(), 1));
                     pasarDatosFila();
                 }
             }
@@ -76,6 +75,7 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setIconifiable(true);
+        setTitle("Sistema de ventas SVA 1.1 / Formulario Mantenimiento de usuarios");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -345,16 +345,15 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
 
     public static void cargarcomboEmpleado(JComboBox combo, ResultSet rs) {
         try {
-//         combo.removeAllItems();
             combo.addItem("-Seleccione-");
             while (rs.next()) {
                 combo.addItem(rs.getString("nombres"));
-            }//Fin while
-            rs.close();//Cierro el ResultSet
+            }
+            rs.close();
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());//Capturo e imprimo el error
-        }//Fin try
-    }//fin funcion
+            System.out.println(ex.getMessage());
+        }
+    }
 
 
     private void btneliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btneliminarActionPerformed
@@ -372,8 +371,6 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
                 Mensajes.msjmuestra("Error View al Eliminado!!!");
             }
         }
-
-
     }//GEN-LAST:event_btneliminarActionPerformed
 
     private void btnbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnbuscarActionPerformed

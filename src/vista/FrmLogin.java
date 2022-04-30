@@ -7,14 +7,16 @@ package vista;
 
 import extras.Mensajes;
 import controlador.UsuarioDAO;
+import javax.swing.JOptionPane;
 import modelo.Usuario;
 
 /**
  *
- * @author Padin
+ * @author Kccalloc
  */
 public class FrmLogin extends javax.swing.JFrame {
-
+    
+public static String nombUsu="";
     /**
      * Creates new form FrmLogin
      */
@@ -38,6 +40,7 @@ public class FrmLogin extends javax.swing.JFrame {
         txtusu = new javax.swing.JTextField();
         txtpwd = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -54,6 +57,11 @@ public class FrmLogin extends javax.swing.JFrame {
         btncan.setBackground(new java.awt.Color(102, 102, 102));
         btncan.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btncan.setText("Cancelar");
+        btncan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btncanActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel1.setText("Usuario:");
@@ -69,6 +77,8 @@ public class FrmLogin extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel3.setText("LOGIN");
 
+        jLabel4.setText("Sistema de ventas SVA version1.1");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -77,27 +87,34 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnlog, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnlog, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)
-                        .addComponent(btncan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(btncan, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
                             .addComponent(jLabel1))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtpwd, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                            .addComponent(txtpwd, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
                             .addComponent(txtusu))))
                 .addGap(35, 35, 35))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel3)
-                .addGap(81, 81, 81))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(114, 114, 114))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(74, 74, 74))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(24, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -114,7 +131,7 @@ public class FrmLogin extends javax.swing.JFrame {
                 .addGap(22, 22, 22))
         );
 
-        setSize(new java.awt.Dimension(309, 292));
+        setSize(new java.awt.Dimension(375, 292));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
@@ -124,20 +141,34 @@ public class FrmLogin extends javax.swing.JFrame {
             Usuario ou=new Usuario();
             ou.setUsuario(txtusu.getText());
             ou.setPassword(txtpwd.getText());
+            
             if(UsuarioDAO.inlogin(ou)>0){
                 Mensajes.msjmuestra("Bienvenido: " + txtusu.getText());
+                this.nombUsu=txtusu.getText();
                 FrmPrincipal op=new FrmPrincipal();
                 op.setExtendedState(MAXIMIZED_BOTH);
                op.show();
                dispose();
             }else{
-                Mensajes.msjmuestra("Ups, algo esta mal!!!");
+                Mensajes.msjmuestra("Usuario no registrado!!!");
             }
         } catch (Exception e) {
             Mensajes.msjmuestra(e.getMessage());
         }
         
     }//GEN-LAST:event_btnlogActionPerformed
+ void salir(){
+        int salir=JOptionPane.showConfirmDialog(null,"Realmente desea salir...?","confirmar salida", JOptionPane.YES_NO_OPTION);
+        if(salir==0){
+            System.exit(0);
+        }else{
+             JOptionPane.showMessageDialog(null,"Usted cancelo su salida...");
+        }
+          
+    }
+    private void btncanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncanActionPerformed
+        salir();
+    }//GEN-LAST:event_btncanActionPerformed
 
     /**
      * @param args the command line arguments
@@ -181,6 +212,7 @@ public class FrmLogin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPasswordField txtpwd;
     private javax.swing.JTextField txtusu;
     // End of variables declaration//GEN-END:variables
