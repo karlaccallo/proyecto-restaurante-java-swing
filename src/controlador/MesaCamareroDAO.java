@@ -100,4 +100,33 @@ public class MesaCamareroDAO {
         }
         return rs;
     }
+      
+      public static ResultSet getDataReporteVentasByInicioFin(Date inicio, Date fin) {
+        ResultSet rs = null;
+        inicio.setHours(0);
+        inicio.setMinutes(0);
+        inicio.setSeconds(0);
+        fin.setHours(23);
+        fin.setMinutes(59);
+        fin.setSeconds(59);
+        
+        try {
+            String query = "select e.Nombre+' '+e.Apellido CAMARERO, np.NumMesa MESA,COUNT(c.NumComprobante) CANTIDAD, SUM(c.Total) MONTO " +
+                            "from ComprobantePago c " +
+                            "inner join Empleado e on c.EmpleadoId=e.EmpleadoId " +
+                            "inner join NotaPedido np on np.NumPedido=c.NumPedido " +
+                            "where c.FechaEmision between ? and ? " +
+                            "group by e.Nombre+' '+e.Apellido, np.NumMesa " +
+                            "order by np.NumMesa";
+
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setTimestamp(1, new java.sql.Timestamp(inicio.getTime()));
+            pst.setTimestamp(2, new java.sql.Timestamp(fin.getTime()));
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+            Mensajes.msjmuestra("Error al traer reporte de ventas " + e.getMessage());
+        }
+        return rs;
+    }
 }

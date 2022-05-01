@@ -21,6 +21,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     Ifrmcomprobante oufrmComprobante;
     IfrmPedidosPendientes oufrmPedidosPendientes;
     IfrmConfiguracionMesas oufrmConfiguracionMesas;
+    IfrmReporteVentas oufrmReporteVentas;
 
     public FrmPrincipal() {
         initComponents();
@@ -171,6 +172,11 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         subMenuReporte.setSelected(true);
         subMenuReporte.setText("Reportes ventas");
+        subMenuReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuReporteActionPerformed(evt);
+            }
+        });
         menuReportes.add(subMenuReporte);
 
         jMenuBar1.add(menuReportes);
@@ -205,64 +211,64 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void subMenuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuUsuarioActionPerformed
-//        if (estacerrado(oufrmusu)) {
-//            oufrmusu = new IfrmUsuarios();
-//            miescritorio.add(oufrmusu);
-//            oufrmusu.show();
-//        } else {
-//            try {
-//                oufrmusu.setMaximum(true);
-//                oufrmusu.setMaximum(false);
-//            } catch (PropertyVetoException ex) {
-//                Mensajes.msjmuestra("Error en " + ex.getMessage());
-//            }
-//        }
+        if (estacerrado(oufrmusu)) {
+            oufrmusu = new IfrmUsuarios();
+            miescritorio.add(oufrmusu);
+            oufrmusu.show();
+        } else {
+            try {
+                oufrmusu.setMaximum(true);
+                oufrmusu.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
          
-//        if (estacerrado(oufrmConfiguracionMesas)) {
-//            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
-//            miescritorio.add(oufrmConfiguracionMesas);
-//            oufrmConfiguracionMesas.show();
-//        } else {
-//            try {
-//                oufrmConfiguracionMesas.setMaximum(true);
-//                oufrmConfiguracionMesas.setMaximum(false);
-//            } catch (PropertyVetoException ex) {
-//                Mensajes.msjmuestra("Error en " + ex.getMessage());
-//            }
-//        }
+        if (estacerrado(oufrmConfiguracionMesas)) {
+            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
+            miescritorio.add(oufrmConfiguracionMesas);
+            oufrmConfiguracionMesas.show();
+        } else {
+            try {
+                oufrmConfiguracionMesas.setMaximum(true);
+                oufrmConfiguracionMesas.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuConfigMesasActionPerformed
 
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
-//        if (estacerrado(oufrmmpedSolCocina)) {
-//            oufrmmpedSolCocina = new IfrmPedidosCocina();
-//            miescritorio.add(oufrmmpedSolCocina);
-//            oufrmmpedSolCocina.show();
-//        } else {
-//            try {
-//                oufrmmpedSolCocina.setMaximum(true);
-//                oufrmmpedSolCocina.setMaximum(false);
-//            } catch (PropertyVetoException ex) {
-//                Mensajes.msjmuestra("Error en " + ex.getMessage());
-//            }
-//        }
+        if (estacerrado(oufrmmpedSolCocina)) {
+            oufrmmpedSolCocina = new IfrmPedidosCocina();
+            miescritorio.add(oufrmmpedSolCocina);
+            oufrmmpedSolCocina.show();
+        } else {
+            try {
+                oufrmmpedSolCocina.setMaximum(true);
+                oufrmmpedSolCocina.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuPedidosSolicitadosActionPerformed
 
     private void subMenuMantCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMantCartaActionPerformed
-//        if (estacerrado(oufrmmcarta)) {
-//            oufrmmcarta = new IfrmCarta();
-//            miescritorio.add(oufrmmcarta);
-//            oufrmmcarta.show();
-//        } else {
-//            try {
-//                oufrmmcarta.setMaximum(true);
-//                oufrmmcarta.setMaximum(false);
-//            } catch (PropertyVetoException ex) {
-//                Mensajes.msjmuestra("Error en " + ex.getMessage());
-//            }
-//        }
+        if (estacerrado(oufrmmcarta)) {
+            oufrmmcarta = new IfrmCarta();
+            miescritorio.add(oufrmmcarta);
+            oufrmmcarta.show();
+        } else {
+            try {
+                oufrmmcarta.setMaximum(true);
+                oufrmmcarta.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuMantCartaActionPerformed
 
     private void subMenuLaCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLaCartaActionPerformed
@@ -329,6 +335,21 @@ public class FrmPrincipal extends javax.swing.JFrame {
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
         Utileria.salir();
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
+
+    private void subMenuReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuReporteActionPerformed
+         if (estacerrado(oufrmReporteVentas)) {
+            oufrmReporteVentas = new IfrmReporteVentas();
+            miescritorio.add(oufrmReporteVentas);
+            oufrmReporteVentas.show();
+        } else {
+            try {
+                oufrmReporteVentas.setMaximum(true);
+                oufrmReporteVentas.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        } 
+    }//GEN-LAST:event_subMenuReporteActionPerformed
 
     /**
      * @param args the command line arguments
