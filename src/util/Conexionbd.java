@@ -5,14 +5,13 @@
  */
 package util;
 
-//import extras.Mensajes;
 import extras.Mensajes;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
  *
- * @author Padin
+ * @author kccalloc
  */
 public class Conexionbd {
  

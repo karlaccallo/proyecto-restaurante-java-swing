@@ -20,6 +20,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     IfrmNotapedido oufrmNotaPedido;
     Ifrmcomprobante oufrmComprobante;
     IfrmPedidosPendientes oufrmPedidosPendientes;
+    IfrmConfiguracionMesas oufrmConfiguracionMesas;
 
     public FrmPrincipal() {
         initComponents();
@@ -219,7 +220,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
-        // TODO add your handling code here:
+         ;
+        if (estacerrado(oufrmConfiguracionMesas)) {
+            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
+            miescritorio.add(oufrmConfiguracionMesas);
+            oufrmConfiguracionMesas.show();
+        } else {
+            try {
+                oufrmConfiguracionMesas.setMaximum(true);
+                oufrmConfiguracionMesas.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuConfigMesasActionPerformed
 
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
