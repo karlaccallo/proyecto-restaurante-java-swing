@@ -22,6 +22,7 @@ public static String nombUsu="";
      */
     public FrmLogin() {
         initComponents();
+        System.setProperty("java.awt.headless", "true");
     }
 
     /**
