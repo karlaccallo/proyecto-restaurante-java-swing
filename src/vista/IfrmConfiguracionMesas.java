@@ -41,7 +41,7 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblusu = new javax.swing.JTable();
+        tblConfiguracion = new javax.swing.JTable();
         cboMesa = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -79,7 +79,7 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
             }
         });
 
-        tblusu.setModel(new javax.swing.table.DefaultTableModel(
+        tblConfiguracion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {},
                 {},
@@ -90,7 +90,7 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
 
             }
         ));
-        jScrollPane1.setViewportView(tblusu);
+        jScrollPane1.setViewportView(tblConfiguracion);
 
         jLabel4.setText("Fecha fin:");
 
@@ -235,9 +235,9 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         
-        if (validarcampos()) {
+        if (validarcamposBusqueda()) {
             
-            listarConfiguracionMesasByFechas(jdateFechaInicio.getDate(),jdateFechaFin.getDate());
+            listarConfiguracionMesasByFechas(jdateFechaIniciob.getDate(),jdateFechaFinb.getDate());
         } else {
             Mensajes.msjmuestra("Ingrese rango de fechas valido");
         }
@@ -245,14 +245,14 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
 
     public void listarConfiguracionMesas() {
         try {
-            tblusu.setModel(DbUtils.resultSetToTableModel(MesaCamareroDAO.getDataMesaCamarero()));
+            tblConfiguracion.setModel(DbUtils.resultSetToTableModel(MesaCamareroDAO.getDataMesaCamarero()));
         } catch (Exception e) {
             Mensajes.msjmuestra("Error View al listar!!!");
         }
     }
     public void listarConfiguracionMesasByFechas(Date inicio,Date fin) {
         try {
-            tblusu.setModel(DbUtils.resultSetToTableModel(MesaCamareroDAO.getDataMesaCamareroByInicioFin(inicio,fin)));
+            tblConfiguracion.setModel(DbUtils.resultSetToTableModel(MesaCamareroDAO.getDataMesaCamareroByInicioFin(inicio,fin)));
         } catch (Exception e) {
             Mensajes.msjmuestra("Error View al listar!!!");
         }
@@ -312,6 +312,15 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
         }
         return true;
     }
+     public boolean validarcamposBusqueda() {
+        if (jdateFechaIniciob.getDate() == null) {
+            return false;       
+        }
+        if (jdateFechaFinb.getDate() == null) {
+            return false;       
+        }
+        return true;
+    }
 
     void cerrarVentana() {
         this.dispose();
@@ -333,6 +342,6 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
     private com.toedter.calendar.JDateChooser jdateFechaFinb;
     private com.toedter.calendar.JDateChooser jdateFechaInicio;
     private com.toedter.calendar.JDateChooser jdateFechaIniciob;
-    private javax.swing.JTable tblusu;
+    private javax.swing.JTable tblConfiguracion;
     // End of variables declaration//GEN-END:variables
 }

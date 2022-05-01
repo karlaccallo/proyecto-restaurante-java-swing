@@ -20,6 +20,7 @@ import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.ComprobantePago;
 import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
@@ -46,7 +47,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         initComponents();
 
         btngrabar.setEnabled(false);
-        btnImprimir.setVisible(false);
+        btnImprimir.setEnabled(false);
         bg.add(rbdbol);
         bg.add(rbdfact);
     }
@@ -351,7 +352,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         txtsubtotal.setText("");
         txttotal.setText("");
         btngrabar.setEnabled(false);
-         btnImprimir.setEnabled(false);
+        btnImprimir.setEnabled(false);
        lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
     }
 
@@ -369,8 +370,6 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
             } else {
                 this.grabar();
                  btnImprimir.setEnabled(true);
-                //this.limpiar();
-                //lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
             }
 
         }
@@ -451,11 +450,11 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
     private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
          try {
             JasperReport reporte = null;
-            String path = System.getProperty("user.dir")+"\\src\\reportes\\ReporteComprobante.jasper";
+            String path = System.getProperty("user.dir")+"\\src\\reportes\\comprobante.jasper";
             reporte = (JasperReport)JRLoader.loadObjectFromFile(path);
+          
             Map parametro=new HashMap();
-           // parametro.put("numero", Integer.parseInt(lblnumero.getText()));
-             parametro.put("numero",10);
+            parametro.put("numero", Integer.parseInt(lblnumero.getText()));
             JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, Conexionbd.ConBD());
             JasperViewer view = new JasperViewer(jprint, false);
             view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
