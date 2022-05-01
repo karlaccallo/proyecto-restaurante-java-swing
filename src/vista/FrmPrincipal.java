@@ -205,64 +205,64 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void subMenuUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuUsuarioActionPerformed
-        if (estacerrado(oufrmusu)) {
-            oufrmusu = new IfrmUsuarios();
-            miescritorio.add(oufrmusu);
-            oufrmusu.show();
-        } else {
-            try {
-                oufrmusu.setMaximum(true);
-                oufrmusu.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en " + ex.getMessage());
-            }
-        }
+//        if (estacerrado(oufrmusu)) {
+//            oufrmusu = new IfrmUsuarios();
+//            miescritorio.add(oufrmusu);
+//            oufrmusu.show();
+//        } else {
+//            try {
+//                oufrmusu.setMaximum(true);
+//                oufrmusu.setMaximum(false);
+//            } catch (PropertyVetoException ex) {
+//                Mensajes.msjmuestra("Error en " + ex.getMessage());
+//            }
+//        }
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
-         ;
-        if (estacerrado(oufrmConfiguracionMesas)) {
-            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
-            miescritorio.add(oufrmConfiguracionMesas);
-            oufrmConfiguracionMesas.show();
-        } else {
-            try {
-                oufrmConfiguracionMesas.setMaximum(true);
-                oufrmConfiguracionMesas.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en " + ex.getMessage());
-            }
-        }
+         
+//        if (estacerrado(oufrmConfiguracionMesas)) {
+//            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
+//            miescritorio.add(oufrmConfiguracionMesas);
+//            oufrmConfiguracionMesas.show();
+//        } else {
+//            try {
+//                oufrmConfiguracionMesas.setMaximum(true);
+//                oufrmConfiguracionMesas.setMaximum(false);
+//            } catch (PropertyVetoException ex) {
+//                Mensajes.msjmuestra("Error en " + ex.getMessage());
+//            }
+//        }
     }//GEN-LAST:event_subMenuConfigMesasActionPerformed
 
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
-        if (estacerrado(oufrmmpedSolCocina)) {
-            oufrmmpedSolCocina = new IfrmPedidosCocina();
-            miescritorio.add(oufrmmpedSolCocina);
-            oufrmmpedSolCocina.show();
-        } else {
-            try {
-                oufrmmpedSolCocina.setMaximum(true);
-                oufrmmpedSolCocina.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en " + ex.getMessage());
-            }
-        }
+//        if (estacerrado(oufrmmpedSolCocina)) {
+//            oufrmmpedSolCocina = new IfrmPedidosCocina();
+//            miescritorio.add(oufrmmpedSolCocina);
+//            oufrmmpedSolCocina.show();
+//        } else {
+//            try {
+//                oufrmmpedSolCocina.setMaximum(true);
+//                oufrmmpedSolCocina.setMaximum(false);
+//            } catch (PropertyVetoException ex) {
+//                Mensajes.msjmuestra("Error en " + ex.getMessage());
+//            }
+//        }
     }//GEN-LAST:event_subMenuPedidosSolicitadosActionPerformed
 
     private void subMenuMantCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuMantCartaActionPerformed
-        if (estacerrado(oufrmmcarta)) {
-            oufrmmcarta = new IfrmCarta();
-            miescritorio.add(oufrmmcarta);
-            oufrmmcarta.show();
-        } else {
-            try {
-                oufrmmcarta.setMaximum(true);
-                oufrmmcarta.setMaximum(false);
-            } catch (PropertyVetoException ex) {
-                Mensajes.msjmuestra("Error en " + ex.getMessage());
-            }
-        }
+//        if (estacerrado(oufrmmcarta)) {
+//            oufrmmcarta = new IfrmCarta();
+//            miescritorio.add(oufrmmcarta);
+//            oufrmmcarta.show();
+//        } else {
+//            try {
+//                oufrmmcarta.setMaximum(true);
+//                oufrmmcarta.setMaximum(false);
+//            } catch (PropertyVetoException ex) {
+//                Mensajes.msjmuestra("Error en " + ex.getMessage());
+//            }
+//        }
     }//GEN-LAST:event_subMenuMantCartaActionPerformed
 
     private void subMenuLaCartaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuLaCartaActionPerformed
