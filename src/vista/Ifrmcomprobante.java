@@ -330,7 +330,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         obj.setSubTotal(Double.parseDouble(txtsubtotal.getText()));
         obj.setIGV(Double.parseDouble(txtigv.getText()));
         obj.setNumPedido(numpedi);
-        obj.setEmpleadoId(UsuarioDAO.getIDempleadoxNombre(lblempleado.getText()));
+        obj.setEmpleadoId(NotaPedidoDAO.getIDempleadoxNumPedido(numpedi));
         obj.setDniCliente(dniCliente);
         obj.setTipoComID(tipoComprobante);
 

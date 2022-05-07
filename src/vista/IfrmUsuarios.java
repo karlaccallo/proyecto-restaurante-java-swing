@@ -274,8 +274,10 @@ public class IfrmUsuarios extends javax.swing.JInternalFrame {
     private void btngrabarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btngrabarActionPerformed
 
         if (validarcampos()) {
+
             grabar();
             listarUsuarios();
+
         } else {
             Mensajes.msjmuestra("complete los datos");
         }
