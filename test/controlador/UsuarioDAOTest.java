@@ -105,7 +105,7 @@ public class UsuarioDAOTest {
     @Test
     public void testGetUsuarioByNomUsu() {
         System.out.println("getUsuarioByNomUsu");
-        String codusuario = "";
+        String codusuario = "kccalloc";
         Usuario result = UsuarioDAO.getUsuarioByNomUsu(codusuario);
         assertTrue(result!=null);
 

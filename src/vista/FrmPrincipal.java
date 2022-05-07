@@ -23,8 +23,10 @@ public class FrmPrincipal extends javax.swing.JFrame {
     IfrmConfiguracionMesas oufrmConfiguracionMesas;
     IfrmReporteVentas oufrmReporteVentas;
 
+
     public FrmPrincipal() {
         initComponents();
+
     }
 
     //Verificamos si el formulario ya fue abierto
@@ -40,6 +42,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
         return cerrado;
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -226,7 +229,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
-         
+
         if (estacerrado(oufrmConfiguracionMesas)) {
             oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
             miescritorio.add(oufrmConfiguracionMesas);
@@ -313,12 +316,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (PropertyVetoException ex) {
                 Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        } 
+        }
     }//GEN-LAST:event_subMenuComprobanteActionPerformed
 
     private void subMenuPedidosPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosPendientesActionPerformed
-  
-          if (estacerrado(oufrmPedidosPendientes)) {
+
+        if (estacerrado(oufrmPedidosPendientes)) {
             oufrmPedidosPendientes = new IfrmPedidosPendientes();
             miescritorio.add(oufrmPedidosPendientes);
             oufrmPedidosPendientes.show();
@@ -329,7 +332,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (PropertyVetoException ex) {
                 Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        } 
+        }
     }//GEN-LAST:event_subMenuPedidosPendientesActionPerformed
 
     private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
@@ -337,7 +340,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
     private void subMenuReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuReporteActionPerformed
-         if (estacerrado(oufrmReporteVentas)) {
+        if (estacerrado(oufrmReporteVentas)) {
             oufrmReporteVentas = new IfrmReporteVentas();
             miescritorio.add(oufrmReporteVentas);
             oufrmReporteVentas.show();
@@ -348,7 +351,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (PropertyVetoException ex) {
                 Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        } 
+        }
     }//GEN-LAST:event_subMenuReporteActionPerformed
 
     /**
@@ -390,13 +393,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu menuCocina;
-    private javax.swing.JMenu menuMenu;
-    private javax.swing.JMenu menuMesas;
-    private javax.swing.JMenu menuPeticiones;
-    private javax.swing.JMenu menuReportes;
-    private javax.swing.JMenu menuSalir;
-    private javax.swing.JMenu menuTablas;
+    public javax.swing.JMenu menuCocina;
+    public javax.swing.JMenu menuMenu;
+    public javax.swing.JMenu menuMesas;
+    public javax.swing.JMenu menuPeticiones;
+    public javax.swing.JMenu menuReportes;
+    public javax.swing.JMenu menuSalir;
+    public javax.swing.JMenu menuTablas;
     private javax.swing.JDesktopPane miescritorio;
     private javax.swing.JCheckBoxMenuItem subMenuComprobante;
     private javax.swing.JCheckBoxMenuItem subMenuConfigMesas;

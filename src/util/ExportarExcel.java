@@ -41,6 +41,8 @@ public class ExportarExcel {
                 Workbook libro = new HSSFWorkbook();
                 FileOutputStream archivo = new FileOutputStream(archivoXLS);
                 Sheet hoja = libro.createSheet("Reporte");
+                hoja.setColumnWidth(0, 9000);
+
                 hoja.setDisplayGridlines(false);
                 for (int f = 0; f < t.getRowCount(); f++) {
                     Row fila = hoja.createRow(f);

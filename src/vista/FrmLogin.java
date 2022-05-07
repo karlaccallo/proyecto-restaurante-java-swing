@@ -15,8 +15,10 @@ import util.Utileria;
  * @author Kccalloc
  */
 public class FrmLogin extends javax.swing.JFrame {
-    
-public static String nombUsu="";
+
+    public static String nombUsu = "";
+    public static Usuario usuarioActual;
+
     /**
      * Creates new form FrmLogin
      */
@@ -139,28 +141,69 @@ public static String nombUsu="";
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnlogActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnlogActionPerformed
-        
+
         try {
-            Usuario ou=new Usuario();
+            Usuario ou = new Usuario();
             ou.setUsuario(txtusu.getText());
             ou.setPassword(txtpwd.getText());
-            
-            if(UsuarioDAO.inlogin(ou)>0){
+
+            if (UsuarioDAO.inlogin(ou) > 0) {
                 Mensajes.msjmuestra("Bienvenido: " + txtusu.getText());
-                this.nombUsu=txtusu.getText();
-                FrmPrincipal op=new FrmPrincipal();
+                this.nombUsu = txtusu.getText();
+                this.usuarioActual = UsuarioDAO.getUsuarioByNomUsu(txtusu.getText());
+
+                FrmPrincipal op = new FrmPrincipal();
+
+                op.menuSalir.setEnabled(true);
+
+                switch (this.usuarioActual.getRol()) {
+                    case "ADMIN": {
+                        op.menuTablas.setEnabled(true);
+                        op.menuMesas.setEnabled(true);
+                        op.menuReportes.setEnabled(true);
+
+                        op.menuPeticiones.setEnabled(false);
+                        op.menuMenu.setEnabled(false);
+                        op.menuCocina.setEnabled(false);
+                        break;
+                    }
+                    case "VENTAS": {
+                        op.menuPeticiones.setEnabled(true);
+                        op.menuMenu.setEnabled(true);
+
+                        op.menuTablas.setEnabled(false);
+                        op.menuMesas.setEnabled(false);
+                        op.menuReportes.setEnabled(false);
+                        op.menuCocina.setEnabled(false);
+                        break;
+                    }
+                    case "COCINA": {
+                        op.menuCocina.setEnabled(true);
+
+                        op.menuTablas.setEnabled(false);
+                        op.menuMesas.setEnabled(false);
+                        op.menuReportes.setEnabled(false);
+                        op.menuPeticiones.setEnabled(false);
+                        op.menuMenu.setEnabled(false);
+                        break;
+                    }
+                    default: {
+                        System.out.println("Rol no tiene asignado ningun menu");
+                    }
+                }
+
                 op.setExtendedState(MAXIMIZED_BOTH);
-               op.show();
-               dispose();
-            }else{
+                op.show();
+                dispose();
+            } else {
                 Mensajes.msjmuestra("Usuario no registrado!!!");
             }
         } catch (Exception e) {
             Mensajes.msjmuestra(e.getMessage());
         }
-        
+
     }//GEN-LAST:event_btnlogActionPerformed
- 
+
     private void btncanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btncanActionPerformed
         Utileria.salir();
     }//GEN-LAST:event_btncanActionPerformed

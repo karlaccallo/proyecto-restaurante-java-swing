@@ -54,14 +54,22 @@ public class MesaCamareroDAO {
       public static boolean grabarConfiguracionMesaCamarero(MesaCamarero obj) {
 
         boolean ok = false;
-
+        Date inicio= obj.getFechaInicio();
+        Date fin= obj.getFechaFin();
+        inicio.setHours(0);
+        inicio.setMinutes(0);
+        inicio.setSeconds(0);
+        fin.setHours(23);
+        fin.setMinutes(58);
+        fin.setSeconds(58);
+        
         try {
             String query = "insert into MesaCamarero values(?,?,?,?)";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setInt(1, obj.getNumMesa());
             pst.setInt(2, obj.getEmpleadoId());
-            pst.setTimestamp(3, new java.sql.Timestamp(obj.getFechaInicio().getTime()));
-            pst.setTimestamp(4, new java.sql.Timestamp(obj.getFechaFin().getTime()));
+            pst.setTimestamp(3, new java.sql.Timestamp(inicio.getTime()));
+            pst.setTimestamp(4, new java.sql.Timestamp(fin.getTime()));
             
             if (pst.executeUpdate() > 0) {
                 ok = true;
@@ -76,12 +84,12 @@ public class MesaCamareroDAO {
       
       public static ResultSet getDataMesaCamareroByInicioFin(Date inicio, Date fin) {
         ResultSet rs = null;
-        inicio.setHours(0);
+        inicio.setHours(-1);
         inicio.setMinutes(0);
         inicio.setSeconds(0);
         fin.setHours(23);
-        fin.setMinutes(59);
-        fin.setSeconds(59);
+        fin.setMinutes(58);
+        fin.setSeconds(58);
         
         try {
             String query = "select m.NumMesa, e.Nombre +' '+e.Apellido as Camarero, mc.FechaInicio, mc.FechaFin" +
@@ -107,8 +115,8 @@ public class MesaCamareroDAO {
         inicio.setMinutes(0);
         inicio.setSeconds(0);
         fin.setHours(23);
-        fin.setMinutes(59);
-        fin.setSeconds(59);
+        fin.setMinutes(58);
+        fin.setSeconds(58);
         
         try {
             String query = "select e.Nombre+' '+e.Apellido CAMARERO, np.NumMesa MESA,COUNT(c.NumComprobante) CANTIDAD, SUM(c.Total) MONTO " +
