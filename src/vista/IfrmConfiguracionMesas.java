@@ -23,7 +23,7 @@ public class IfrmConfiguracionMesas extends javax.swing.JInternalFrame {
         initComponents();
 
         ResultSet rsE;
-        rsE = UsuarioDAO.getDataEmpleado();
+        rsE = UsuarioDAO.getDataEmpleadoCamarero();
         ResultSet rsMesa;
         rsMesa = MesaCamareroDAO.getDataNumeroMesas();
         cargarcomboEmpleado(cboEmpleado, rsE);
