@@ -38,9 +38,11 @@ public class MesaCamareroDAO {
      public static ResultSet getDataMesaCamarero() {
         ResultSet rs = null;
         try {
-            String query = "select m.NumMesa, e.Nombre +' '+e.Apellido as Camarero, mc.FechaInicio, mc.FechaFin" +
-                            " from MesaCamarero mc inner join Mesa m on m.MesaId=mc.MesaId" +
-                            " inner join empleado e on e.EmpleadoId=mc.EmpleadoId order by FechaInicio desc";
+            String query = "select m.NumMesa, e.Nombre +' '+e.Apellido as Camarero, mc.FechaInicio, mc.FechaFin, " +
+                        "(CASE WHEN mc.FechaFin < GETDATE() THEN 'FINALIZADO' ELSE 'EN PROGRESO' end)  'Estado' " +
+                        "from MesaCamarero mc inner join Mesa m on m.MesaId=mc.MesaId " +
+                        "inner join empleado e on e.EmpleadoId=mc.EmpleadoId " +
+                        "order by FechaInicio desc";
 
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             rs = pst.executeQuery();
@@ -92,11 +94,12 @@ public class MesaCamareroDAO {
         fin.setSeconds(58);
         
         try {
-            String query = "select m.NumMesa, e.Nombre +' '+e.Apellido as Camarero, mc.FechaInicio, mc.FechaFin" +
-                            " from MesaCamarero mc inner join Mesa m on m.MesaId=mc.MesaId" +
-                            " inner join empleado e on e.EmpleadoId=mc.EmpleadoId "
-                             + " where FechaInicio between ? and ?"
-                            + " order by FechaInicio desc";
+            String query = "select m.NumMesa, e.Nombre +' '+e.Apellido as Camarero, mc.FechaInicio, mc.FechaFin," +
+                        "(CASE WHEN mc.FechaFin < GETDATE() THEN 'FINALIZADO' ELSE 'EN PROGRESO' end) 'Estado'" +
+                        "  from MesaCamarero mc inner join Mesa m on m.MesaId=mc.MesaId" +
+                        "  inner join empleado e on e.EmpleadoId=mc.EmpleadoId" +
+                        "  where FechaInicio between ? and ?" +
+                        "  order by FechaInicio desc";
 
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setTimestamp(1, new java.sql.Timestamp(inicio.getTime()));

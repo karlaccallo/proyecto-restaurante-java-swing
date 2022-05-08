@@ -247,5 +247,20 @@ public class UsuarioDAO {
         }
         return nombre;
     }
+    
+        public static ResultSet getDataEmpleadoCamarero() {
+        ResultSet rs = null;
+        try {
+            String query = "select nombre +' ' + apellido as nombres from empleado e " +
+                            "inner join Usuario u on e.EmpleadoId=u.EmpleadoId where u.Rol ='VENTAS'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
+        }
+        return rs;
+    }
 
 }
