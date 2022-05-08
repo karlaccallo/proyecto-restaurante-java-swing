@@ -77,20 +77,29 @@ public class UsuarioDAO {
 
     public static boolean newusuario(Usuario ou) {
         boolean ok = false;
-        try {
-            String query = "insert into usuario(usuario,password,rol,habilitado,empleadoid) values(?,?,?,'1',?)";
-            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
-            pst.setString(1, ou.getUsuario());
-            pst.setString(2, ou.getPassword());
-            pst.setString(3, ou.getRol());
-            pst.setInt(4, ou.getEmpleadoId());
-            if (pst.executeUpdate() > 0) {
-                ok = true;
-            }
-            Conexionbd.cerrarBD(Conexionbd.ConBD());
-        } catch (Exception e) {
+        Usuario ouExistente=UsuarioDAO.getUsuarioByNomUsu(ou.getUsuario());
+        int idusus=0;
+        idusus=ouExistente.getUsuarioId();
+        if (idusus!=0) {
+            Mensajes.msjmuestra("Codigo de usuario ya existe");
+        } else {
 
-            Mensajes.msjmuestra("Error al guardar " + e.getMessage());
+            try {
+                String query = "insert into usuario(usuario,password,rol,habilitado,empleadoid) values(?,?,?,'1',?)";
+                PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+                pst.setString(1, ou.getUsuario());
+                pst.setString(2, ou.getPassword());
+                pst.setString(3, ou.getRol());
+                pst.setInt(4, ou.getEmpleadoId());
+                if (pst.executeUpdate() > 0) {
+                    ok = true;
+                }
+                Conexionbd.cerrarBD(Conexionbd.ConBD());
+            } catch (Exception e) {
+
+                Mensajes.msjmuestra("Error al guardar " + e.getMessage());
+            }
+
         }
         return ok;
     }
@@ -224,8 +233,8 @@ public class UsuarioDAO {
     public static String getNombreCamareroByNombreUsuario(String usuario) {
         String nombre = "";
         try {
-            String query = "select e.nombre +' '+e.apellido nombres FROM usuario u " +
-                            "join empleado e on u.empleadoid=e.empleadoid where usuario=?";
+            String query = "select e.nombre +' '+e.apellido nombres FROM usuario u "
+                    + "join empleado e on u.empleadoid=e.empleadoid where usuario=?";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setString(1, usuario);
             ResultSet rs = pst.executeQuery();
@@ -237,6 +246,21 @@ public class UsuarioDAO {
             Mensajes.msjmuestra("Error: " + e.getMessage());
         }
         return nombre;
+    }
+    
+        public static ResultSet getDataEmpleadoCamarero() {
+        ResultSet rs = null;
+        try {
+            String query = "select nombre +' ' + apellido as nombres from empleado e " +
+                            "inner join Usuario u on e.EmpleadoId=u.EmpleadoId where u.Rol ='VENTAS'";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            rs = pst.executeQuery();
+            Conexionbd.cerrarBD(Conexionbd.ConBD());
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error al Listar usuarios " + e.getMessage());
+        }
+        return rs;
     }
 
 }

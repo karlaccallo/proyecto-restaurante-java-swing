@@ -11,9 +11,22 @@ import controlador.DetallePedidoDAO;
 import extras.Mensajes;
 import static extras.Mensajes.miInput;
 import java.sql.ResultSet;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 import javax.swing.table.DefaultTableModel;
 import modelo.ComprobantePago;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
+import util.Conexionbd;
 import util.Utileria;
 
 /**
@@ -34,6 +47,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         initComponents();
 
         btngrabar.setEnabled(false);
+        btnImprimir.setEnabled(false);
         bg.add(rbdbol);
         bg.add(rbdfact);
     }
@@ -76,6 +90,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         btnpedido = new javax.swing.JButton();
         lblempleado = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        btnImprimir = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -169,6 +184,13 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
 
         lblempleado.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
+        btnImprimir.setText("Imprimir Comprobante");
+        btnImprimir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImprimirActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -183,7 +205,9 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(btngrabar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(btnlimp1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -265,7 +289,8 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btngrabar)
-                    .addComponent(btnlimp1))
+                    .addComponent(btnlimp1)
+                    .addComponent(btnImprimir))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -280,7 +305,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(txttotal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
 
         pack();
@@ -305,7 +330,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         obj.setSubTotal(Double.parseDouble(txtsubtotal.getText()));
         obj.setIGV(Double.parseDouble(txtigv.getText()));
         obj.setNumPedido(numpedi);
-        obj.setEmpleadoId(UsuarioDAO.getIDempleadoxNombre(lblempleado.getText()));
+        obj.setEmpleadoId(NotaPedidoDAO.getIDempleadoxNumPedido(numpedi));
         obj.setDniCliente(dniCliente);
         obj.setTipoComID(tipoComprobante);
 
@@ -327,7 +352,8 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         txtsubtotal.setText("");
         txttotal.setText("");
         btngrabar.setEnabled(false);
-       
+        btnImprimir.setEnabled(false);
+       lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
     }
 
     //////////////////////////
@@ -343,8 +369,7 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
                 Mensajes.msjmuestra("El pedido indicado ya tiene comprobante de pago generado!!!");
             } else {
                 this.grabar();
-                this.limpiar();
-                lblnumero.setText("" + ComprobantePagoDAO.generarNumeroComprobante());
+                 btnImprimir.setEnabled(true);
             }
 
         }
@@ -422,7 +447,26 @@ public class Ifrmcomprobante extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnpedidoActionPerformed
 
+    private void btnImprimirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImprimirActionPerformed
+         try {
+            JasperReport reporte = null;
+            String path = System.getProperty("user.dir")+"\\src\\reportes\\comprobante.jasper";
+            reporte = (JasperReport)JRLoader.loadObjectFromFile(path);
+          
+            Map parametro=new HashMap();
+            parametro.put("numero", Integer.parseInt(lblnumero.getText()));
+            JasperPrint jprint = JasperFillManager.fillReport(reporte, parametro, Conexionbd.ConBD());
+            JasperViewer view = new JasperViewer(jprint, false);
+            view.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+            view.setVisible(true);
+        } catch (JRException ex) {
+            Logger.getLogger(IfrmMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_btnImprimirActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnbuscar;
     private javax.swing.JButton btngrabar;
     private javax.swing.JButton btnlimp1;

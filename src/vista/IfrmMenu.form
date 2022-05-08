@@ -38,6 +38,8 @@
                       <Component id="txtbuscar" min="-2" pref="277" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Component id="btnbuscar" min="-2" pref="81" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btnReporte" min="-2" pref="110" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -58,9 +60,10 @@
                   <Component id="jLabel6" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cboCategoria" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnReporte" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="437" max="32767" attributes="0"/>
+              <Component id="jScrollPane1" pref="445" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -126,6 +129,14 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ingrese plato a buscar"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="btnReporte">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Imprimir men&#xfa;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnReporteActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

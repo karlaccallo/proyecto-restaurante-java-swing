@@ -6,6 +6,7 @@
 package util;
 
 import java.text.ParseException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -29,5 +30,16 @@ public class Utileria {
         int mes = f.getMonth() + 1;
         int dia = f.getDate();
         return dia + "-" + mes + "-" + año;
+    }
+    
+    public static void salir(){
+        int salir=JOptionPane.showConfirmDialog(null,"Realmente desea salir...?",
+                "confirmar salida", 
+                JOptionPane.YES_NO_OPTION);
+        if(salir==0){
+            System.exit(0);
+        }else{
+             JOptionPane.showMessageDialog(null,"Usted cancelo su salida...");
+        }
     }
 }

@@ -135,4 +135,22 @@ public class NotaPedidoDAO {
         }
         return rs;
     }
+    
+        public static int getIDempleadoxNumPedido(int numPedido) {
+        int idempleado = 0;
+
+        try {
+            String query = "select empleadoid from notapedido where numpedido=?";
+            PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
+            pst.setInt(1, numPedido);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                idempleado = (rs.getInt(1));
+            }
+        } catch (Exception e) {
+
+            Mensajes.msjmuestra("Error: " + e.getMessage());
+        }
+        return idempleado;
+    }
 }

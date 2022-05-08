@@ -230,7 +230,7 @@ public class CartaDAO {
     public static boolean deleteCarta(int cod) {
         boolean ok = false;
         try {
-            String query = "delete from carta where cartaid=?";
+            String query = "update carta set habilitado='0', estado='NO DISPONIBLE' where cartaid=?";
             PreparedStatement pst = Conexionbd.ConBD().prepareStatement(query);
             pst.setInt(1, cod);
 

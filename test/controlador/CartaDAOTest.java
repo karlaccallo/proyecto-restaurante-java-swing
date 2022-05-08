@@ -6,6 +6,9 @@
 package controlador;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Carta;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,22 +22,22 @@ import static org.junit.Assert.*;
  * @author kccalloc
  */
 public class CartaDAOTest {
-    
+
     public CartaDAOTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -45,11 +48,18 @@ public class CartaDAOTest {
     @Test
     public void testGetDataCarta() {
         System.out.println("getDataCarta");
-        ResultSet expResult = null;
+        boolean tieneData = true;
         ResultSet result = CartaDAO.getDataCarta();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -58,12 +68,18 @@ public class CartaDAOTest {
     @Test
     public void testGetDataCartaByDescripcion() {
         System.out.println("getDataCartaByDescripcion");
-        String cartaDesc = "";
-        ResultSet expResult = null;
+        String cartaDesc = "Arroz con pollo";
+        boolean tieneData = true;
         ResultSet result = CartaDAO.getDataCartaByDescripcion(cartaDesc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -72,12 +88,9 @@ public class CartaDAOTest {
     @Test
     public void testGetCartaByID() {
         System.out.println("getCartaByID");
-        int cartaId = 0;
-        Carta expResult = null;
+        int cartaId = 2;
         Carta result = CartaDAO.getCartaByID(cartaId);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result != null);
     }
 
     /**
@@ -86,12 +99,10 @@ public class CartaDAOTest {
     @Test
     public void testGetCartaByNombre() {
         System.out.println("getCartaByNombre");
-        String cartaDesc = "";
-        Carta expResult = null;
+        String cartaDesc = "Arroz con pollo";
         Carta result = CartaDAO.getCartaByNombre(cartaDesc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        assertTrue(result != null);
+
     }
 
     /**
@@ -100,11 +111,18 @@ public class CartaDAOTest {
     @Test
     public void testGetDataCategoria() {
         System.out.println("getDataCategoria");
-        ResultSet expResult = null;
         ResultSet result = CartaDAO.getDataCategoria();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean tieneData = true;
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -113,40 +131,11 @@ public class CartaDAOTest {
     @Test
     public void testGetIDcategoriaxDescrpcion() {
         System.out.println("getIDcategoriaxDescrpcion");
-        String categoria = "";
-        int expResult = 0;
+        String categoria = "POSTRES";
+        int expResult = 4;
         int result = CartaDAO.getIDcategoriaxDescrpcion(categoria);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of newCarta method, of class CartaDAO.
-     */
-    @Test
-    public void testNewCarta() {
-        System.out.println("newCarta");
-        Carta obj = null;
-        boolean expResult = false;
-        boolean result = CartaDAO.newCarta(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of actualizarCarta method, of class CartaDAO.
-     */
-    @Test
-    public void testActualizarCarta() {
-        System.out.println("actualizarCarta");
-        Carta obj = null;
-        boolean expResult = false;
-        boolean result = CartaDAO.actualizarCarta(obj);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -155,11 +144,9 @@ public class CartaDAOTest {
     @Test
     public void testGenerarIdCarta() {
         System.out.println("generarIdCarta");
-        int expResult = 0;
+        int expResult = 32;
         int result = CartaDAO.generarIdCarta();
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -168,26 +155,11 @@ public class CartaDAOTest {
     @Test
     public void testGetIDCategoriaPorNombre() {
         System.out.println("getIDCategoriaPorNombre");
-        String categoria = "";
-        int expResult = 0;
+        String categoria = "POSTRES";
+        int expResult = 4;
         int result = CartaDAO.getIDCategoriaPorNombre(categoria);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of deleteCarta method, of class CartaDAO.
-     */
-    @Test
-    public void testDeleteCarta() {
-        System.out.println("deleteCarta");
-        int cod = 0;
-        boolean expResult = false;
-        boolean result = CartaDAO.deleteCarta(cod);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
     }
 
     /**
@@ -196,11 +168,18 @@ public class CartaDAOTest {
     @Test
     public void testGetDataCartaDisponible() {
         System.out.println("getDataCartaDisponible");
-        ResultSet expResult = null;
         ResultSet result = CartaDAO.getDataCartaDisponible();
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean tieneData = true;
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -209,12 +188,19 @@ public class CartaDAOTest {
     @Test
     public void testGetDataCartaDisponibleByDescripcion() {
         System.out.println("getDataCartaDisponibleByDescripcion");
-        String cartaDesc = "";
-        ResultSet expResult = null;
+        String cartaDesc = "Pollo";
         ResultSet result = CartaDAO.getDataCartaDisponibleByDescripcion(cartaDesc);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean tieneData = true;
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -223,12 +209,19 @@ public class CartaDAOTest {
     @Test
     public void testGetPlatosByCategoria() {
         System.out.println("getPlatosByCategoria");
-        String categoria = "";
-        ResultSet expResult = null;
+        String categoria = "POSTRES";
         ResultSet result = CartaDAO.getPlatosByCategoria(categoria);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean tieneData = true;
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
 
     /**
@@ -237,12 +230,11 @@ public class CartaDAOTest {
     @Test
     public void testGetIdCartaByNombre() {
         System.out.println("getIdCartaByNombre");
-        String cartaNombre = "";
-        int expResult = 0;
+        String cartaNombre = "Pollo a la Brasa";
+        int expResult = 2;
         int result = CartaDAO.getIdCartaByNombre(cartaNombre);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -251,12 +243,11 @@ public class CartaDAOTest {
     @Test
     public void testGetPrecioCartaById() {
         System.out.println("getPrecioCartaById");
-        int id = 0;
-        double expResult = 0.0;
+        int id = 1;
+        double expResult = 45.00;
         double result = CartaDAO.getPrecioCartaById(id);
         assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
 
     /**
@@ -265,12 +256,19 @@ public class CartaDAOTest {
     @Test
     public void testGetNombrePlatoByCategoria() {
         System.out.println("getNombrePlatoByCategoria");
-        String categoria = "";
-        ResultSet expResult = null;
+        String categoria = "POSTRES";
         ResultSet result = CartaDAO.getNombrePlatoByCategoria(categoria);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        boolean tieneData = true;
+
+        try {
+            if (!result.next()) {
+                tieneData = false;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CartaDAOTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        assertTrue(tieneData);
+
     }
-    
+
 }

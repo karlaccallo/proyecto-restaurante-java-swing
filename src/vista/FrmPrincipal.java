@@ -8,6 +8,7 @@ package vista;
 import extras.Mensajes;
 import java.beans.PropertyVetoException;
 import javax.swing.JInternalFrame;
+import util.Utileria;
 
 public class FrmPrincipal extends javax.swing.JFrame {
 
@@ -19,9 +20,13 @@ public class FrmPrincipal extends javax.swing.JFrame {
     IfrmNotapedido oufrmNotaPedido;
     Ifrmcomprobante oufrmComprobante;
     IfrmPedidosPendientes oufrmPedidosPendientes;
+    IfrmConfiguracionMesas oufrmConfiguracionMesas;
+    IfrmReporteVentas oufrmReporteVentas;
+
 
     public FrmPrincipal() {
         initComponents();
+
     }
 
     //Verificamos si el formulario ya fue abierto
@@ -37,6 +42,7 @@ public class FrmPrincipal extends javax.swing.JFrame {
         }
         return cerrado;
     }
+
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -59,6 +65,8 @@ public class FrmPrincipal extends javax.swing.JFrame {
         subMenuConfigMesas = new javax.swing.JCheckBoxMenuItem();
         menuReportes = new javax.swing.JMenu();
         subMenuReporte = new javax.swing.JCheckBoxMenuItem();
+        menuSalir = new javax.swing.JMenu();
+        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -167,9 +175,27 @@ public class FrmPrincipal extends javax.swing.JFrame {
 
         subMenuReporte.setSelected(true);
         subMenuReporte.setText("Reportes ventas");
+        subMenuReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                subMenuReporteActionPerformed(evt);
+            }
+        });
         menuReportes.add(subMenuReporte);
 
         jMenuBar1.add(menuReportes);
+
+        menuSalir.setText("Salir");
+
+        jCheckBoxMenuItem1.setSelected(true);
+        jCheckBoxMenuItem1.setText("Salir");
+        jCheckBoxMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCheckBoxMenuItem1ActionPerformed(evt);
+            }
+        });
+        menuSalir.add(jCheckBoxMenuItem1);
+
+        jMenuBar1.add(menuSalir);
 
         setJMenuBar(jMenuBar1);
 
@@ -203,7 +229,19 @@ public class FrmPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_subMenuUsuarioActionPerformed
 
     private void subMenuConfigMesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuConfigMesasActionPerformed
-        // TODO add your handling code here:
+
+        if (estacerrado(oufrmConfiguracionMesas)) {
+            oufrmConfiguracionMesas = new IfrmConfiguracionMesas();
+            miescritorio.add(oufrmConfiguracionMesas);
+            oufrmConfiguracionMesas.show();
+        } else {
+            try {
+                oufrmConfiguracionMesas.setMaximum(true);
+                oufrmConfiguracionMesas.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
+            }
+        }
     }//GEN-LAST:event_subMenuConfigMesasActionPerformed
 
     private void subMenuPedidosSolicitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosSolicitadosActionPerformed
@@ -278,12 +316,12 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (PropertyVetoException ex) {
                 Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        } 
+        }
     }//GEN-LAST:event_subMenuComprobanteActionPerformed
 
     private void subMenuPedidosPendientesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuPedidosPendientesActionPerformed
-  
-          if (estacerrado(oufrmPedidosPendientes)) {
+
+        if (estacerrado(oufrmPedidosPendientes)) {
             oufrmPedidosPendientes = new IfrmPedidosPendientes();
             miescritorio.add(oufrmPedidosPendientes);
             oufrmPedidosPendientes.show();
@@ -294,53 +332,74 @@ public class FrmPrincipal extends javax.swing.JFrame {
             } catch (PropertyVetoException ex) {
                 Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        } 
+        }
     }//GEN-LAST:event_subMenuPedidosPendientesActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
+    private void jCheckBoxMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxMenuItem1ActionPerformed
+        Utileria.salir();
+    }//GEN-LAST:event_jCheckBoxMenuItem1ActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FrmPrincipal().setVisible(true);
+    private void subMenuReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_subMenuReporteActionPerformed
+        if (estacerrado(oufrmReporteVentas)) {
+            oufrmReporteVentas = new IfrmReporteVentas();
+            miescritorio.add(oufrmReporteVentas);
+            oufrmReporteVentas.show();
+        } else {
+            try {
+                oufrmReporteVentas.setMaximum(true);
+                oufrmReporteVentas.setMaximum(false);
+            } catch (PropertyVetoException ex) {
+                Mensajes.msjmuestra("Error en " + ex.getMessage());
             }
-        });
-    }
+        }
+    }//GEN-LAST:event_subMenuReporteActionPerformed
+
+//    /**
+//     * @param args the command line arguments
+//     */
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(FrmPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new FrmPrincipal().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenu menuCocina;
-    private javax.swing.JMenu menuMenu;
-    private javax.swing.JMenu menuMesas;
-    private javax.swing.JMenu menuPeticiones;
-    private javax.swing.JMenu menuReportes;
-    private javax.swing.JMenu menuTablas;
+    public javax.swing.JMenu menuCocina;
+    public javax.swing.JMenu menuMenu;
+    public javax.swing.JMenu menuMesas;
+    public javax.swing.JMenu menuPeticiones;
+    public javax.swing.JMenu menuReportes;
+    public javax.swing.JMenu menuSalir;
+    public javax.swing.JMenu menuTablas;
     private javax.swing.JDesktopPane miescritorio;
     private javax.swing.JCheckBoxMenuItem subMenuComprobante;
     private javax.swing.JCheckBoxMenuItem subMenuConfigMesas;
